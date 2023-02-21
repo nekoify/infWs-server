@@ -1,3 +1,32 @@
+/*
+
+ _____   _                                       
+ |_   _| | |                                      
+   | |   | | _____   _____   _ __ ___   ___ _ __  
+   | |   | |/ _ \ \ / / _ \ | '_ ` _ \ / _ \ '_ \ 
+  _| |_  | | (_) \ V /  __/ | | | | | |  __/ | | |
+ |_____| |_|\___/ \_/ \___| |_| |_| |_|\___|_| |_|
+                                                  
+┌────────┐                                         ┌────────┐
+│        │                                         │        │
+│        ├                                         │        │
+│        │                                         │        │
+│        │  ◄──────────────────────────────────────┤        │ ◄───┐    ┌────────┐
+│        │           Spam all clients              │        │     └────┤ Chunks │
+│ Client │                                         │ Server │          └────────┘
+│        │                                         │        │              ▲
+│        │                                         │        │              │
+│        │                                         │        │              │
+│        │                Make Action              │        │              │
+│        ├───────────────────────────────────────► │        ├──────────────┘
+│        │                                         │        │
+└────────┘                                         └────────┘
+
+
+
+
+*/
+
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -583,12 +612,25 @@ app.get('/', (req, res) => {
     res.send('server');
 });
 
-io.on('connection', (socket) => {
-  socket.on("account", (data) => {
-    console.log(data)
-  })
- 
+io.on('connection', async(socket) => {
+    socket.on("account", (data) => {
+        console.log(data)
+      })
+    socket.on('makeClick', (data) => {
+        inputClick(data)
+       
+
+
+    });
+
+    
+
 })
+
+setInterval(() => {
+    io.sockets.emit("chunkUpdate", output())
+}, 1000/10);
+
 
 server.listen(process.env.PORT || 8085, () => {
     console.log('listening on *:8085');
