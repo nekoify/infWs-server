@@ -615,13 +615,12 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                 var neiTile = mainChunks.requestTile(nei.x, nei.y)
                 
                 if (!neiTile.uncovered && tick>0) {
-                    setTimeout(() => {
-                        inputClick({
-                            pos:nei,
-                            flag:false,
-                        }, undefined, tick-1)
+                    inputClick({
+                        pos:nei,
+                        flag:false,
+                    }, undefined, tick-1)
 
-                    }, 200);
+                   
                 }
             }
         }
