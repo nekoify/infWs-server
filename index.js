@@ -8,11 +8,11 @@
  |_____| |_|\___/ \_/ \___| |_| |_| |_|\___|_| |_|
                                                   
 ┌────────┐                                         ┌────────┐
-│        │            Make chunk Request           │        │
-│        ├───────────────────────────────────────► │        │
+│        │                                         │        │
+│        ├                                         │        │
 │        │                                         │        │
 │        │  ◄──────────────────────────────────────┤        │ ◄───┐    ┌────────┐
-│        │           Return chunk Request          │        │     └────┤ Chunks │
+│        │           Spam all clients              │        │     └────┤ Chunks │
 │ Client │                                         │ Server │          └────────┘
 │        │                                         │        │              ▲
 │        │                                         │        │              │
@@ -625,10 +625,7 @@ io.on('connection', async(socket) => {
 
     });
     socket.on('requestingChunksDaddy', (data) => {
-        
-       
-
-
+        socket.emit(output())
     });
 
 })
