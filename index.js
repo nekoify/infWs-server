@@ -599,6 +599,10 @@ function inputClick(data, user, tick=5) {
     } else {
         tile.uncovered = true
         tile.count = count
+        if (tile.mine) {
+            mainChunks = new Chunks()
+            return
+        }
         if (tile.count==0) {
             var neis = getNeighbours(v(data.pos.x,data.pos.y))
             for (let i = 0; i < neis.length; i++) {
