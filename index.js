@@ -31,15 +31,9 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
-let { DB } = require("mongquick");
-// const mongoSec = process.env.mongoSec
-// const mdb = new DB(`mongodb+srv://xl83:${mongoSec}@cluster0.c2sln.mongodb.net/Cluster0?retryWrites=true&w=majority`);
 
- // mdb.set(`info-${userLower}`, {pass: hash, user: data.username});
-// await mdb.get(`info-${checkLower}`)
-
-
-
+const accountData = require(`${__dirname}/account.json`)
+const chunkData = require(`${__dirname}/chunks.json`)
 
 
 function createElementFromHTML(htmlString) {
@@ -621,6 +615,9 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', async(socket) => {
+    socket.on("account", (data) => {
+        console.log(data)
+      })
     socket.on('makeClick', (data) => {
         inputClick(data)
        
@@ -628,15 +625,15 @@ io.on('connection', async(socket) => {
 
     });
     socket.on('requestingChunksDaddy', (data) => {
-        socket.emit
+        
        
 
 
     });
- 
+
 })
 
 
 server.listen(process.env.PORT || 8085, () => {
-    console.log('listening on *:3000');
+    console.log('listening on *:8085');
 })
