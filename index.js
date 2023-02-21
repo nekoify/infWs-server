@@ -603,7 +603,7 @@ function output() {
 
 const io = require("socket.io")(server, {
     cors: {
-        origin: "https://aeolus-1.github.io"
+        origin: "*"
     }
 });
 
@@ -618,7 +618,7 @@ io.on('connection', async(socket) => {
       })
     socket.on('makeClick', (data) => {
         inputClick(data)
-       
+       console.log(data)
 
 
     });
