@@ -597,6 +597,23 @@ function inputClick(data, user) {
     } else {
         tile.uncovered = true
         tile.count = count
+        if (tile.count==0) {
+            var neis = getNeighbours(tilePos)
+            for (let i = 0; i < neis.length; i++) {
+                const nei = neis[i];
+                var neiTile = mainChunks.requestTile(nei.x, nei.y)
+                
+                if (!neiTile.uncovered) {
+                    setTimeout(() => {
+                        inputClick({
+                            pos:nei,
+                            flag:false,
+                        })
+
+                    }, 200);
+                }
+            }
+        }
     }
 } 
 function getNeighbours(tilePos) {
