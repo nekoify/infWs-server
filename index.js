@@ -572,14 +572,12 @@ function output() {
     return JSON.stringify(mainChunks)
 }
 
-
-
-
 const io = require("socket.io")(server, {
     cors: {
         origin: "https://aeolus-1.github.io"
     }
 });
+
 
 app.get('/', (req, res) => {
     res.send('server');
