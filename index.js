@@ -1,3 +1,32 @@
+/*
+
+ _____   _                                       
+ |_   _| | |                                      
+   | |   | | _____   _____   _ __ ___   ___ _ __  
+   | |   | |/ _ \ \ / / _ \ | '_ ` _ \ / _ \ '_ \ 
+  _| |_  | | (_) \ V /  __/ | | | | | |  __/ | | |
+ |_____| |_|\___/ \_/ \___| |_| |_| |_|\___|_| |_|
+                                                  
+┌────────┐                                         ┌────────┐
+│        │            Make chunk Request           │        │
+│        ├───────────────────────────────────────► │        │
+│        │                                         │        │
+│        │  ◄──────────────────────────────────────┤        │ ◄───┐    ┌────────┐
+│        │           Return chunk Request          │        │     └────┤ Chunks │
+│ Client │                                         │ Server │          └────────┘
+│        │                                         │        │              ▲
+│        │                                         │        │              │
+│        │                                         │        │              │
+│        │                Make Action              │        │              │
+│        ├───────────────────────────────────────► │        ├──────────────┘
+│        │                                         │        │
+└────────┘                                         └────────┘
+
+
+
+
+*/
+
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -592,9 +621,21 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', async(socket) => {
-  
+    socket.on('makeClick', (data) => {
+        inputClick(data)
+       
+
+
+    });
+    socket.on('requestingChunksDaddy', (data) => {
+        socket.emit
+       
+
+
+    });
  
 })
+
 
 server.listen(process.env.PORT || 8085, () => {
     console.log('listening on *:3000');
