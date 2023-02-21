@@ -590,7 +590,9 @@ class Chunks {
 
 
 
-var mainChunks = new Chunks()
+var mainChunks = new Chunks(),
+    updateTicker = 1000,
+    previouseDelta = (new Date()).getTime()
 
 
 function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
@@ -625,6 +627,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
             }
         }
     }
+    updateTicker = 2000
 } 
 function getNeighbours(tilePos) {
     
@@ -679,6 +682,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', async(socket) => {
+    updateTicker = 2000
     socket.on("account", (data) => {
         console.log(data)
       })
@@ -694,7 +698,13 @@ io.on('connection', async(socket) => {
 })
 
 setInterval(() => {
-    io.sockets.emit("chunkUpdate", output())
+    var time = ((new Date()).getTime())
+    updateTicker -= time-previouseDelta
+    previouseDelta = time
+    if (updateTicker > 0) {
+        io.sockets.emit("chunkUpdate", output())
+    } 
+    
 }, 1000/SERVER_UPDATES_PER_SECOND);
 
 
