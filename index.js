@@ -557,8 +557,16 @@ class Chunks {
 var mainChunks = new Chunks()
 
 
-function inputClick(pos, user) {
+function inputClick(data, user) {
+    
 
+    var tile = mainChunks.requestTile(data.pos.x,data.pos.y)
+    if (data.flag) {
+        tile.flagged = !tile.flagged
+    } else {
+        tile.uncovered = true
+        tile.count = count
+    }
 } 
 function output() {
     return JSON.stringify(mainChunks)
