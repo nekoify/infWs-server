@@ -624,11 +624,14 @@ io.on('connection', async(socket) => {
 
 
     });
-    socket.on('requestingChunksDaddy', (data) => {
-        socket.emit(output())
-    });
+
+    
 
 })
+
+setInterval(() => {
+    io.sockets.emit("chunkUpdate", output())
+}, 1000/10);
 
 
 server.listen(process.env.PORT || 8085, () => {
