@@ -27,6 +27,11 @@
 
 */
 
+const SERVER_UPDATES_PER_SECOND = 8
+const CHAINBREAKING_LIMIT = 6
+const RESET_ON_BOMB = true
+
+
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -588,7 +593,7 @@ class Chunks {
 var mainChunks = new Chunks()
 
 
-function inputClick(data, user, tick=5) {
+function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
     
 
     var tile = mainChunks.requestTile(data.pos.x,data.pos.y),
@@ -599,11 +604,11 @@ function inputClick(data, user, tick=5) {
     } else {
         tile.uncovered = true
         tile.count = count
-        if (tile.mine) {
+        if (tile.mine && RESET_ON_BOMB) {
             mainChunks = new Chunks()
             return
         }
-        if (tile.count==0) {
+        if (tile.count==0&&!tile.mine) {
             var neis = getNeighbours(v(data.pos.x,data.pos.y))
             for (let i = 0; i < neis.length; i++) {
                 const nei = neis[i];
@@ -691,7 +696,7 @@ io.on('connection', async(socket) => {
 
 setInterval(() => {
     io.sockets.emit("chunkUpdate", output())
-}, 1000/4);
+}, 1000/SERVER_UPDATES_PER_SECOND);
 
 
 server.listen(process.env.PORT || 8085, () => {
