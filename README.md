@@ -1,1 +1,1 @@
-``https://github.com/aeolus-1/infinateMuliMinesweeper``
+[Game here](https://github.com/aeolus-1/infinateMuliMinesweeper)
