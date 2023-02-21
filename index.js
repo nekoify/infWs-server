@@ -590,7 +590,7 @@ function inputClick(data, user) {
     
 
     var tile = mainChunks.requestTile(data.pos.x,data.pos.y),
-        count = countNeighbours(data.pos.x,data.pos.y)
+        count = countNeighbours(v(data.pos.x,data.pos.y))
 
     if (data.flag) {
         tile.flagged = !tile.flagged
