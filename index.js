@@ -27,9 +27,9 @@
 
 */
 
-const SERVER_UPDATES_PER_SECOND = 8
+const SERVER_UPDATES_PER_SECOND = 20
 const CHAINBREAKING_LIMIT = 6
-const RESET_ON_BOMB = true
+const RESET_ON_BOMB = false
 
 
 const express = require('express');
