@@ -617,8 +617,8 @@ io.on('connection', async(socket) => {
         console.log(data)
       })
     socket.on('makeClick', (data) => {
+        console.log(data)
         inputClick(data)
-       console.log(data)
 
 
     });
