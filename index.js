@@ -598,7 +598,7 @@ function inputClick(data, user) {
         tile.uncovered = true
         tile.count = count
         if (tile.count==0) {
-            var neis = getNeighbours(tilePos)
+            var neis = getNeighbours(v(data.pos.x,data.pos.y))
             for (let i = 0; i < neis.length; i++) {
                 const nei = neis[i];
                 var neiTile = mainChunks.requestTile(nei.x, nei.y)
