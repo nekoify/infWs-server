@@ -589,7 +589,9 @@ var mainChunks = new Chunks()
 function inputClick(data, user) {
     
 
-    var tile = mainChunks.requestTile(data.pos.x,data.pos.y)
+    var tile = mainChunks.requestTile(data.pos.x,data.pos.y),
+        count = countNeighbours(data.pos.x,data.pos.y)
+
     if (data.flag) {
         tile.flagged = !tile.flagged
     } else {
@@ -597,6 +599,43 @@ function inputClick(data, user) {
         tile.count = count
     }
 } 
+function getNeighbours(tilePos) {
+    
+    var neighbours = [
+        v(1,1),v(0,1),v(-1,1),
+        v(1,0),v(-1,0),
+        v(1,-1),v(0,-1),v(-1,-1),
+    ]
+    for (let i = 0; i < neighbours.length; i++) {
+        const nei = neighbours[i];
+        let pos = v(
+            tilePos.x+nei.x,
+            tilePos.y+nei.y
+        )
+        neighbours[i] = pos
+    }
+    return neighbours
+}
+function countNeighbours(tilePos) {
+    var tile = mainChunks.requestTile(tilePos.x,tilePos.y),
+        neighbours = [
+            v(1,1),v(0,1),v(-1,1),
+            v(1,0),v(-1,0),
+            v(1,-1),v(0,-1),v(-1,-1),
+        ]
+        var count = 0
+    for (let i = 0; i < neighbours.length; i++) {
+        const nei = neighbours[i];
+        let pos = v(
+            tilePos.x+nei.x,
+            tilePos.y+nei.y
+        )
+        neighbours[i] = mainChunks.requestTile(pos.x,pos.y)
+        count += neighbours[i].mine?1:0
+    }
+    return count
+
+}
 function output() {
     return JSON.stringify(mainChunks)
 }
