@@ -483,7 +483,7 @@ function tileArray2d(e, t, n, r, c) {
 
 function cTile(e, t) {
     this.pos = v(e, t)
-    this.mine = Math.random()>1-(1/10)
+    this.mine = Math.random()<(1/6)
     this.uncovered = false
     this.flagged = false
 }
@@ -586,7 +586,7 @@ class Chunks {
 var mainChunks = new Chunks()
 
 
-function inputClick(data, user) {
+function inputClick(data, user, tick=5) {
     
 
     var tile = mainChunks.requestTile(data.pos.x,data.pos.y),
@@ -603,12 +603,12 @@ function inputClick(data, user) {
                 const nei = neis[i];
                 var neiTile = mainChunks.requestTile(nei.x, nei.y)
                 
-                if (!neiTile.uncovered) {
+                if (!neiTile.uncovered && tick>0) {
                     setTimeout(() => {
                         inputClick({
                             pos:nei,
                             flag:false,
-                        })
+                        }, undefined, tick-1)
 
                     }, 200);
                 }
@@ -685,7 +685,7 @@ io.on('connection', async(socket) => {
 
 setInterval(() => {
     io.sockets.emit("chunkUpdate", output())
-}, 1000/10);
+}, 1000/4);
 
 
 server.listen(process.env.PORT || 8085, () => {
