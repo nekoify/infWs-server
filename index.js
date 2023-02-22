@@ -643,33 +643,38 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
     var tile = mainChunks.requestTile(data.pos.x,data.pos.y),
         count = countNeighbours(v(data.pos.x,data.pos.y))
 
-    if (data.flag && !tile.uncovered) {
-        tile.flagged = !tile.flagged
-        tile.flaggedBy = data.name
-    } else {
-        tile.uncovered = true
-        tile.count = count
-        if (tile.mine && RESET_ON_BOMB) {
-            mainChunks = new Chunks()
-            return
-        }
-        if (tile.count==0&&!tile.mine) {
-            var neis = getNeighbours(v(data.pos.x,data.pos.y))
-            for (let i = 0; i < neis.length; i++) {
-                const nei = neis[i];
-                var neiTile = mainChunks.requestTile(nei.x, nei.y)
-                
-                if (!neiTile.uncovered && tick>0) {
-                    inputClick({
-                        pos:nei,
-                        flag:false,
-                    }, undefined, tick-1)
-
-                   
+        if (!tile.uncovered) {
+            if (data.flag) {
+                tile.flagged = !tile.flagged
+                tile.flaggedBy = data.name
+            } else if (!tile.flagged) {
+                tile.uncovered = true
+                tile.count = count
+                if (tile.mine && RESET_ON_BOMB) {
+                    mainChunks = new Chunks()
+                    return
+                }
+                if (tile.count==0&&!tile.mine) {
+                    var neis = getNeighbours(v(data.pos.x,data.pos.y))
+                    for (let i = 0; i < neis.length; i++) {
+                        const nei = neis[i];
+                        var neiTile = mainChunks.requestTile(nei.x, nei.y)
+                        
+                        if (!neiTile.uncovered && tick>0) {
+                            inputClick({
+                                pos:nei,
+                                flag:false,
+                            }, undefined, tick-1)
+        
+                           
+                        }
+                    }
                 }
             }
-        }
-    }
+            
+        } else tile.flagged = false
+
+    
     updateTicker = 2000
 } 
 function getNeighbours(tilePos) {
