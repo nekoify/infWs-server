@@ -602,7 +602,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
     var tile = mainChunks.requestTile(data.pos.x,data.pos.y),
         count = countNeighbours(v(data.pos.x,data.pos.y))
 
-    if (data.flag) {
+    if (data.flag && !tile.uncovered) {
         tile.flagged = !tile.flagged
         tile.flaggedBy = data.name
     } else {
