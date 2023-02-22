@@ -688,6 +688,8 @@ io.on('connection', async(socket) => {
     socket.on("account", (data) => {
         console.log(data)
       })
+
+      
     socket.on('makeClick', (data) => {
         data = JSON.parse(data)
         inputClick(data)
@@ -712,9 +714,10 @@ setInterval(() => {
 
 server.listen(process.env.PORT || 8085, () => {
     console.log('listening on *:8085');
+    mainChunks.chunkMaps = chunkData["chunks"]
 })
 
 setInterval(() =>{
     chunkData["chunks"] = mainChunks.chunkMaps
     fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
-},10000)
+},30000)
