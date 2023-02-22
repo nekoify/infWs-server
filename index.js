@@ -493,7 +493,7 @@ function cTile(e, t) {
     this.mine = Math.random()<(1/num)
     this.uncovered = false
     this.flagged = false
-    this.flaggedBy = undefined
+    this.flaggedBy = null
 }
 function cChunk(e, t) {
 
