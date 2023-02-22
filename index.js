@@ -31,6 +31,9 @@ const SERVER_UPDATES_PER_SECOND = 20
 const CHAINBREAKING_LIMIT = 6
 const RESET_ON_BOMB = false
 
+const TILE_CLEAR_REWARD = 1
+const TRIGGER_MINE_REWARD = -35
+
 
 const express = require('express');
 const app = express();
@@ -586,8 +589,40 @@ class Chunks {
 
 
 
+function acknowledgeAccount(id, name) {
+    accountData[id] = accountData[id]||({
+        name:name,
+        score:0,
+    });
+    accountData[id].name = name
 
+}
+function modifyScore(id, score) {
+    accountData[id] = accountData[id]||({
+        name:"unamed",
+        score:0,
+    });
+    accountData[id].score += score
+}
 
+function getLeaderboard() {
+
+    //=========placeholder==========
+    let accountData = {
+        "43":{name:"yya1",score:43},
+        "4sd3":{name:"yippee",score:43},
+        "4fd3":{name:"ysfv1",score:2},
+        "423":{name:"yfds",score:7},
+        "3":{name:"ywd1",score:69},
+        "44333":{name:"yya21",score:420},
+    }
+    //=============================
+
+    var players = (Object.keys(accountData)).map((e)=>{return accountData[e]})
+    return players.sort((a,b)=>{return -Math.sign(a.score-b.score)})
+
+    
+}
 
 
 
@@ -597,6 +632,12 @@ var mainChunks = new Chunks(),
 
 
 function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
+    user = {
+        id:data.id,
+        name:data.name,
+    }
+
+    acknowledgeAccount(user.id, user.name)
     
 
     var tile = mainChunks.requestTile(data.pos.x,data.pos.y),
@@ -669,7 +710,10 @@ function countNeighbours(tilePos) {
 
 }
 function output() {
-    return JSON.stringify(mainChunks)
+    return JSON.stringify({
+        chunks:mainChunks,
+        leaderboard:getLeaderboard(),
+    })
 }
 
 const io = require("socket.io")(server, {
