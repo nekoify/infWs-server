@@ -602,7 +602,7 @@ function modifyScore(id, score) {
         name:"unamed",
         score:0,
     });
-    accountData[id].score += score
+    accountData[id].score = clamp(accountData[id].score+score,0, Infinity)
 }
 
 function getLeaderboard() {
