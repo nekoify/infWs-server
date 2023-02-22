@@ -12,6 +12,7 @@
     "dependencies": {
         "crypto-js": "^4.1.1",
         "discord.js": "^13.13.1",
+        "dotenv": "^16.0.3",
         "express": "^4.17.3",
         "mongquick": "github:ahqsoftwares/quickmongo",
         "socket.io": "^4.4.1"
