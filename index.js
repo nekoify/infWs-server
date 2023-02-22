@@ -668,6 +668,47 @@ function getLeaderboard() {
     
 }
 
+function getChunkStats() {
+    var chunks = mainChunks.chunkMaps
+    var stats = {
+        tilesUncovered:0,
+        flags:0,
+        minesTriggered:0
+    }
+    function runQuad(quad) {
+        var tiles = new Array()
+        for (let x = 0; x < quad.length; x++) {
+            if (quad[x]!=undefined){
+                for (let y = 0; y < quad[x].length; y++) {
+                    if (quad[x][y] != undefined) {
+                           if (quad[x][y]!=undefined) {
+                                var grid = quad[x][y].grid
+                               for (let x2 = 0; x2 < grid.length; x2++) {
+                                   if (grid[x2]!=undefined){
+                                    for (let y2 = 0; y2 < grid[x2].length; y2++) {
+                                        if (grid[x2][y2]!=undefined) {
+                                            var tile = grid[x2][y2]
+                                            if (tile.uncovered) stats.tilesUncovered++
+                                            if (tile.flagged && !tile.uncovered) stats.flags++
+                                            if (tile.mine && tile.uncovered) stats.minesTriggered++
+                                        }
+                                    }
+                                   }
+                               }
+                           }
+                    }
+                }
+            }
+        }
+        return tiles
+    }
+    runQuad(chunks.x0y0array.array)
+    runQuad(chunks.x1y0array.array)
+    runQuad(chunks.x0y1array.array)
+    runQuad(chunks.x1y1array.array)
+    return stats
+}
+
 
 
 var mainChunks = new Chunks(),
