@@ -32,7 +32,7 @@ const CHAINBREAKING_LIMIT = 6
 const RESET_ON_BOMB = false
 
 const TILE_CLEAR_REWARD = 1
-const TRIGGER_MINE_REWARD = -35
+const TRIGGER_MINE_REWARD = -25
 
 
 const express = require('express');
