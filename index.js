@@ -652,7 +652,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
             } else if (!tile.flagged) {
                 tile.uncovered = true
                 tile.count = count
-                if (tile.count>0) {
+                if (tile.count>0 && tick==CHAINBREAKING_LIMIT) {
                     s(TILE_CLEAR_REWARD)
                 }
                 if (tile.mine && RESET_ON_BOMB) {
