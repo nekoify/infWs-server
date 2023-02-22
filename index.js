@@ -603,6 +603,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
 
     if (data.flag) {
         tile.flagged = !tile.flagged
+        tile.flaggedBy = data.name
     } else {
         tile.uncovered = true
         tile.count = count
