@@ -1,2 +1,4 @@
 node_modules
 .env
+account.json
+chunks.json
