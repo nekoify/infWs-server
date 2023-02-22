@@ -686,6 +686,8 @@ io.on('connection', async(socket) => {
     socket.on("account", (data) => {
         console.log(data)
       })
+
+      
     socket.on('makeClick', (data) => {
         data = JSON.parse(data)
         inputClick(data)
