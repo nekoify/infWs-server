@@ -606,7 +606,7 @@ function modifyScore(id, score) {
 }
 
 function getLeaderboard() {
-
+/*
     //=========placeholder==========
     let accountData = {
         "43":{name:"yya1",score:43},
@@ -617,7 +617,7 @@ function getLeaderboard() {
         "44333":{name:"yya21",score:420},
     }
     //=============================
-
+*/
     var players = (Object.keys(accountData)).map((e)=>{return accountData[e]})
     return players.sort((a,b)=>{return -Math.sign(a.score-b.score)})
 
@@ -637,6 +637,8 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
         name:data.name,
     }
 
+    function s(s) {modifyScore(user.id, s)}
+
     acknowledgeAccount(user.id, user.name)
     
 
@@ -650,9 +652,15 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
             } else if (!tile.flagged) {
                 tile.uncovered = true
                 tile.count = count
+                if (tile.count>0) {
+                    s(TILE_CLEAR_REWARD)
+                }
                 if (tile.mine && RESET_ON_BOMB) {
                     mainChunks = new Chunks()
                     return
+                }
+                if (tile.mine) {
+                    s(TRIGGER_MINE_REWARD)
                 }
                 if (tile.count==0&&!tile.mine) {
                     var neis = getNeighbours(v(data.pos.x,data.pos.y))
