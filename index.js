@@ -34,7 +34,9 @@ const RESET_ON_BOMB = false
 const TILE_CLEAR_REWARD = 1
 const TRIGGER_MINE_REWARD = -25
 
+var exec = require('child_process').exec;
 require('dotenv').config()
+const process = require("process")
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -226,6 +228,47 @@ function get3dDistance(x, y, z, a, b, c) {
     let yd = (y - b)
     let zd = (z - c)
     return Math.sqrt(Math.pow(xd, 2) + Math.pow(yd, 2) + Math.pow(zd, 2))
+}
+
+function getChunkStats() {
+    var chunks = mainChunks.chunkMaps
+    var stats = {
+        tilesUncovered:0,
+        flags:0,
+        minesTriggered:0
+    }
+    function runQuad(quad) {
+        var tiles = new Array()
+        for (let x = 0; x < quad.length; x++) {
+            if (quad[x]!=undefined){
+                for (let y = 0; y < quad[x].length; y++) {
+                    if (quad[x][y] != undefined) {
+                           if (quad[x][y]!=undefined) {
+                                var grid = quad[x][y].grid
+                               for (let x2 = 0; x2 < grid.length; x2++) {
+                                   if (grid[x2]!=undefined){
+                                    for (let y2 = 0; y2 < grid[x2].length; y2++) {
+                                        if (grid[x2][y2]!=undefined) {
+                                            var tile = grid[x2][y2]
+                                            if (tile.uncovered) stats.tilesUncovered++
+                                            if (tile.flagged && !tile.uncovered) stats.flags++
+                                            if (tile.mine && tile.uncovered) stats.minesTriggered++
+                                        }
+                                    }
+                                   }
+                               }
+                           }
+                    }
+                }
+            }
+        }
+        return tiles
+    }
+    runQuad(chunks.x0y0array.array)
+    runQuad(chunks.x1y0array.array)
+    runQuad(chunks.x0y1array.array)
+    runQuad(chunks.x1y1array.array)
+    return stats
 }
 
 function getAngle(x, y) {
@@ -784,4 +827,28 @@ client.on("ready", ()=>{
     console.log(`Logged in as ${client.user.tag}!`);
 })
 
-client.login(procces.env.TOKEN)
+client.on("messageCreate", (message) => {
+    if (message.content == "!stats") {
+        console.log("trying")
+        try {
+            var stats = getChunkStats()
+        } catch (error) {
+            message.channel.send("error getting stats (maybe empty chunks)")
+        }
+        console.log(stats)
+        message.channel.send(`${stats.tilesUncovered} blocks uncovered, ${stats.flags} flags placed, ${stats.minesTriggered} mines triggered`)
+    }
+})
+
+client.on("messageCreate", (message) => {
+    if (message.content == "!resetBoard") {
+        mainChunks = new Chunks()
+        chunkData["chunks"] = mainChunks
+    message.channel.send("done, restarting server...")
+    fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
+    exec("pm2 restart 9")
+    }
+})
+
+
+client.login(process.env.TOKEN)
