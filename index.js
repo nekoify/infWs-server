@@ -34,7 +34,7 @@ const RESET_ON_BOMB = false
 const TILE_CLEAR_REWARD = 1
 const TRIGGER_MINE_REWARD = -25
 
-
+require('dotenv').config()
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -42,7 +42,8 @@ const server = http.createServer(app);
 const fs = require("fs")
 const accountData = require(`${__dirname}/account.json`)
 const chunkData = require(`${__dirname}/chunks.json`)
-
+const { Client, Intents, MessageEmbed, MessageAttachment } = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 function createElementFromHTML(htmlString) {
 	var div = document.createElement('div');
@@ -819,3 +820,9 @@ setInterval(() =>{
     chunkData["chunks"] = mainChunks.chunkMaps
     fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
 },30000)
+
+client.on("ready", ()=>{
+    console.log(`Logged in as ${client.user.tag}!`);
+})
+
+client.login(procces.env.TOKEN)
