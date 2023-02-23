@@ -889,10 +889,36 @@ client.on("messageCreate", (message) => {
     }
 })
 client.on("messageCreate", (message) => {
+    if (message.content == "!leaderboard") {
+        var board = getLeaderboard(),
+            text = ""
+
+        for (let i = 0; i < board.length; i++) {
+            const user = board[i];
+            text = text+`\n${user.name} (${user.score})`
+        }
+    message.channel.send(text)
+    
+    }
+})
+client.on("messageCreate", (message) => {
     message.content = message.content.split(" ")
     if (message.content[0] == "!score") {
+        var names = {},
+            ids = Object.keys(accountData)
+        for (let i = 0; i < ids.length; i++) {
+            const account = accountData[ids[i]]
+            names[account.name] = ids[i]
+        }
         
-        message.channel.send(`Set score of ${message.content[1]} to ${message.content[2]}`)
+        if (names[message.content[1]]==undefined) {
+            message.channel.send(`Failed to set ${message.content[1]}'s score. Doesn't exist`)
+        } else {
+            var id = names[message.content[1]]
+            accountData[id].score = parseInt(message.content[1])
+            message.channel.send(`Set score of ${message.content[1]} to ${message.content[2]}`)
+        }
+        
     
     }
 })
