@@ -639,7 +639,7 @@ function acknowledgeAccount(id, name) {
         name:name,
         score:0,
         stats:{
-            spacesCleared:0,
+            tilesCleared:0,
             minesFlagged:0,
             minesTriggered:0,
         },
@@ -652,7 +652,7 @@ function modifyScore(id, score) {
         name:"unamed",
         score:0,
         stats:{
-            spacesCleared:0,
+            tilesCleared:0,
             minesFlagged:0,
             minesTriggered:0,
         }
