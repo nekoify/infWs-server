@@ -28,7 +28,7 @@
 */
 
 const SERVER_UPDATES_PER_SECOND = 20
-const CHAINBREAKING_LIMIT = 6
+const CHAINBREAKING_LIMIT = 10
 const RESET_ON_BOMB = false
 
 const TILE_CLEAR_REWARD = 1
@@ -1078,20 +1078,34 @@ client.on("messageCreate", async (message) => {
 client.on("messageCreate", (message) => {
     if (message.content == "!resetDb") {
         if (message.author.id == "640147303939964930" || message.author.id == "416508744097071107") {
+        if (message.content.includes('!eval')) {
+      var code = message.content.split("!eval ")[1]
+      try {
+        eval(code)
+      } catch (err) {
+        message.channel.send(String(err))
+      }
+    }
         accountData = {}
     message.channel.send("done, restarting server...")
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
     exec("pm2 restart 9")
         }
+    } else {
+        if (message.content.includes('!eval')) {
+            if (message.author.id == "640147303939964930" || message.author.id == "416508744097071107") {
+            var code = message.content.split("!eval ")[1]
+            try {
+              eval(code)
+            } catch (err) {
+              message.channel.send(String(err))
+            }
+          }
     }
+}
 })
 
-client.on("messageCreate", (message) => {
-    if (message.content == "!test") {
-    if (message.author.id == "640147303939964930" || message.author.id == "416508744097071107") {
-    message.channel.send("test")
-    }
-    }
-})
+
+
 
 client.login(process.env.TOKEN)
