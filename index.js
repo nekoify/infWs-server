@@ -880,6 +880,22 @@ client.on("messageCreate", (message) => {
         message.channel.send(`${stats.tilesUncovered} blocks uncovered, ${stats.flags} flags placed, ${stats.minesTriggered} mines triggered`)
     }
 })
+client.on("messageCreate", (message) => {
+    if (message.content == "!ping") {
+        
+    message.channel.send("pong")
+    
+    }
+})
+client.on("messageCreate", (message) => {
+    message.content = message.content.split(" ")
+    if (message.content[0] == "!score") {
+        
+        message.channel.send(`Set score of ${message.content[1]} to ${message.content[2]}`)
+    
+    }
+})
+
 
 client.on("messageCreate", (message) => {
     if (message.content == "!resetBoard") {
