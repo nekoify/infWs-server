@@ -940,6 +940,13 @@ client.on("messageCreate", (message) => {
     }
 })
 
+client.on("messageCreate", (message) => {
+    if (message.content == "!resetAllAccounts") {
+        if ((message.author.id != "416508744097071107") || (message.author.id != "640147303939964930")) return
+        accountData = {}
+    }
+})
+
 client.on("messageCreate", async (message) => {
     message.content = message.content.split(" ")
     if (message.content[0] == "!board") {
