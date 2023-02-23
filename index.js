@@ -867,6 +867,7 @@ setInterval(() =>{
 
 client.on("ready", ()=>{
     console.log(`Logged in as ${client.user.tag}!`);
+    client.user.setPresence({ activities: [{ name: 'https://aeolus-1.github.io/infinateMuliMinesweeper/', }], status: 'available' });
 })
 
 client.on("messageCreate", (message) => {
