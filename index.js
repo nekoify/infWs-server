@@ -890,10 +890,39 @@ client.on("messageCreate", (message) => {
     }
 })
 client.on("messageCreate", (message) => {
-    message.content = message.content.split(" ")
-    if (message.content[0] == "!score") {
+    if (message.content == "!leaderboard") {
+        message.channel.send("getting leaderboard")
+
+        var board = getLeaderboard(),
+            text = ""
+
+        for (let i = 0; i < board.length; i++) {
+            const user = board[i];
+            text = text+`\n${user.name} (${user.score})`
+        }
+    message.channel.send(text)
+    
+    }
+})
+client.on("messageCreate", (message) => {
+    var string = message.content
+    string = string.split(" ")
+    if (string[0] == "!score") {
+        var names = {},
+            ids = Object.keys(accountData)
+        for (let i = 0; i < ids.length; i++) {
+            const account = accountData[ids[i]]
+            names[account.name] = ids[i]
+        }
         
-        message.channel.send(`Set score of ${message.content[1]} to ${message.content[2]}`)
+        if (names[string[1]]==undefined) {
+            message.channel.send(`Failed to set ${string[1]}'s score. Doesn't exist`)
+        } else {
+            var id = names[string[1]]
+            accountData[id].score = parseInt(string[1])
+            message.channel.send(`Set score of ${string[1]} to ${string[2]}`)
+        }
+        
     
     }
 })
