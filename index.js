@@ -940,6 +940,7 @@ client.on("messageCreate", (message) => {
 })
 
 client.on("messageCreate", async (message) => {
+    console.log(message.content)
     message.content = message.content.split(" ")
     if (message.content[0] == "!board") {
         
