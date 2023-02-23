@@ -949,7 +949,7 @@ client.on("messageCreate", (message) => {
         }
         
     
-    } else if (string.length==1) {
+    } else if (string.length==1 && string[0]=="!stats") {
         try {
             var stats = getChunkStats()
         } catch (error) {
