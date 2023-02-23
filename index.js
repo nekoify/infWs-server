@@ -727,7 +727,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
 
     acknowledgeAccount(user.id, user.name)
     
-
+    console.log(data, user, tick)
     var tile = mainChunks.requestTile(data.pos.x,data.pos.y),
         count = countNeighbours(v(data.pos.x,data.pos.y))
 
