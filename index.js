@@ -638,6 +638,7 @@ function acknowledgeAccount(id, name) {
     accountData[id] = accountData[id]||({
         name:name,
         score:0,
+        stats:0,
     });
     accountData[id].name = name
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
@@ -646,9 +647,42 @@ function modifyScore(id, score) {
     accountData[id] = accountData[id]||({
         name:"unamed",
         score:0,
+        stats:{
+            spacesCleared:0,
+            minesFlagged:0,
+            minesTriggered:0,
+        }
     });
     accountData[id].score = clamp(accountData[id].score+score,0, Infinity)
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
+}
+function updateStats(id, statsMod) {
+    statsMod = {
+        spacesCleared:0,
+        minesFlagged:0,
+        minesTriggered:0,
+        ...statsMod,
+    }
+    var statsAccount = accountData[id]||({
+        name:"unamed",
+        score:0,
+        stats:{
+            spacesCleared:0,
+            minesFlagged:0,
+            minesTriggered:0,
+        }
+    });
+    if (statsAccount.stats == undefined) {
+        statsAccount.stats = {
+            spacesCleared:0,
+            minesFlagged:0,
+            minesTriggered:0,
+        }
+    }
+
+    statsAccount.stats.spacesCleared += statsMod.spacesCleared
+    statsAccount.stats.minesFlagged += statsMod.minesFlagged
+    statsAccount.stats.minesTriggered += statsMod.minesTriggered
 }
 
 function getLeaderboard() {
@@ -870,7 +904,7 @@ client.on("ready", ()=>{
     console.log(`Logged in as ${client.user.tag}!`);
     client.user.setPresence({ activities: [{ name: 'https://aeolus-1.github.io/infinateMuliMinesweeper/', }], status: 'available' });
 })
-
+/*
 client.on("messageCreate", (message) => {
     if (message.content == "!stats") {
         console.log("trying")
@@ -881,6 +915,41 @@ client.on("messageCreate", (message) => {
         }
         message.channel.send(`${stats.tilesUncovered} blocks uncovered, ${stats.flags} flags placed, ${stats.minesTriggered} mines triggered`)
     }
+})*/
+client.on("messageCreate", (message) => {
+    var string = message.content
+    string = string.split(" ")
+    if (string[0] == "!stats" && string.length==2) {
+        var names = {},
+            ids = Object.keys(accountData)
+        for (let i = 0; i < ids.length; i++) {
+            const account = accountData[ids[i]]
+            names[account.name] = ids[i]
+        }
+        
+        if (names[string[1]]==undefined) {
+            message.channel.send(`Failed to fetch stats for ${string[1]}. User doesn't exist`)
+        } else {
+            var id = names[string[1]]
+            updateStats(id)
+            var stats = accountData[id].stats
+            message.channel.send(`__Stats for ${string[1]}__\nTile Cleared: ${stats.tilesUncovered}\nMines Flagged: ${stats.minesFlagged}\nMines Triggered: ${stats.minesTriggered}\n`)
+        }
+        
+    
+    } else if (string.length==1) {
+        try {
+            var stats = getChunkStats()
+        } catch (error) {
+            message.channel.send("error getting stats (maybe empty chunks)")
+        }
+        message.channel.send(`__Global Stats__\n${stats.tilesUncovered} blocks uncovered, ${stats.flags} flags placed, ${stats.minesTriggered} mines triggered`)
+
+    }
+
+
+         //updateStats
+    
 })
 client.on("messageCreate", (message) => {
     if (message.content == "!ping") {
