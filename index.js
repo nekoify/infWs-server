@@ -1001,6 +1001,7 @@ client.on("messageCreate", (message) => {
     var string = message.content
     string = string.split(" ")
     if (string[0] == "!score") {
+        if (message.author.id == "640147303939964930" || message.author.id == "416508744097071107") {
         var names = {},
             ids = Object.keys(accountData)
         for (let i = 0; i < ids.length; i++) {
@@ -1016,7 +1017,7 @@ client.on("messageCreate", (message) => {
             message.channel.send(`Set score of ${string[1]} to ${string[2]}`)
         }
         
-    
+        }
     }
 })
 
@@ -1034,7 +1035,6 @@ client.on("messageCreate", (message) => {
 })
 
 client.on("messageCreate", async (message) => {
-    console.log(message.content)
     message.content = message.content.split(" ")
     if (message.content[0] == "!board") {
         
@@ -1081,7 +1081,6 @@ client.on("messageCreate", (message) => {
 })
 
 client.on("messageCreate", (message) => {
-    console.log(message.author.id)
     if (message.content == "!test") {
     if (message.author.id == "640147303939964930" || message.author.id == "416508744097071107") {
     message.channel.send("test")
