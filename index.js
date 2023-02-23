@@ -638,7 +638,11 @@ function acknowledgeAccount(id, name) {
     accountData[id] = accountData[id]||({
         name:name,
         score:0,
-        stats:0,
+        stats:{
+            spacesCleared:0,
+            minesFlagged:0,
+            minesTriggered:0,
+        },
     });
     accountData[id].name = name
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
