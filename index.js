@@ -597,7 +597,7 @@ class Chunks {
     requestChunks(e, t, n, r) {
         let a = new Array();
         for (let l = n; l > 0; l--)
-            for (let n = 0; n < r; n++) {console.log(n, t);a.push(this.requestChunk(l + e, n + t));}
+            for (let n = 0; n < r; n++) {a.push(this.requestChunk(l + e, n + t));}
         return a;
     }
     getMobiles(e) {
@@ -728,7 +728,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
 
     acknowledgeAccount(user.id, user.name)
     
-    console.log(data, user, tick)
+
     var tile = mainChunks.requestTile(data.pos.x,data.pos.y),
         count = countNeighbours(v(data.pos.x,data.pos.y))
 
@@ -879,7 +879,6 @@ client.on("messageCreate", (message) => {
         } catch (error) {
             message.channel.send("error getting stats (maybe empty chunks)")
         }
-        console.log(stats)
         message.channel.send(`${stats.tilesUncovered} blocks uncovered, ${stats.flags} flags placed, ${stats.minesTriggered} mines triggered`)
     }
 })
@@ -995,7 +994,7 @@ client.on("messageCreate", (message) => {
     console.log(message.author.id)
     if (message.content == "!test") {
         console.log((message.author.id != "416508744097071107"))
-        console.log(((message.author.id != "416508744097071107") || (message.author.id != "640147303939964930")))
+        console.log((message.author.id != "416508744097071107" || message.author.id != "640147303939964930"))
         if ((message.author.id != "416508744097071107") || (message.author.id != "640147303939964930")) return
         console.log("test")
     }
