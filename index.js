@@ -640,7 +640,7 @@ function acknowledgeAccount(id, name) {
         score:0,
     });
     accountData[id].name = name
-
+    fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
 }
 function modifyScore(id, score) {
     accountData[id] = accountData[id]||({
@@ -648,6 +648,7 @@ function modifyScore(id, score) {
         score:0,
     });
     accountData[id].score = clamp(accountData[id].score+score,0, Infinity)
+    fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
 }
 
 function getLeaderboard() {
@@ -940,8 +941,11 @@ client.on("messageCreate", (message) => {
 })
 
 client.on("messageCreate", async (message) => {
-    if (message.content.includes("!board")) {
-        var zoomAmount = message.content.split("!board ")[1]
+    message.content = message.content.split(" ")
+    if (message.content[0] == "!board") {
+        
+        var zoomAmount = message.content[1]
+
         const browser = await puppeteer.launch({
             args: ['--no-sandbox']
         });
