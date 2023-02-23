@@ -1011,7 +1011,7 @@ client.on("messageCreate", (message) => {
         chunkData["chunks"] = mainChunks.chunkMaps
     message.channel.send("done, restarting server...")
     fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
-    exec("pm2 restart 9")
+    exec("pm2 restart 8")
         }
     }
 })
@@ -1065,7 +1065,7 @@ client.on("messageCreate", (message) => {
         accountData = {}
     message.channel.send("done, restarting server...")
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
-    exec("pm2 restart 9")
+    exec("pm2 restart 8")
         }
     } else {
         if (message.content.includes('!eval')) {
