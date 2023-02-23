@@ -905,8 +905,8 @@ client.on("messageCreate", (message) => {
 })
 client.on("messageCreate", (message) => {
     var string = message.content
-    string = message.content.split(" ")
-    if (message.content[0] == "!score") {
+    string = string.split(" ")
+    if (string[0] == "!score") {
         var names = {},
             ids = Object.keys(accountData)
         for (let i = 0; i < ids.length; i++) {
@@ -914,12 +914,12 @@ client.on("messageCreate", (message) => {
             names[account.name] = ids[i]
         }
         
-        if (names[message.content[1]]==undefined) {
-            message.channel.send(`Failed to set ${message.content[1]}'s score. Doesn't exist`)
+        if (names[string[1]]==undefined) {
+            message.channel.send(`Failed to set ${string[1]}'s score. Doesn't exist`)
         } else {
-            var id = names[message.content[1]]
-            accountData[id].score = parseInt(message.content[1])
-            message.channel.send(`Set score of ${message.content[1]} to ${message.content[2]}`)
+            var id = names[string[1]]
+            accountData[id].score = parseInt(string[1])
+            message.channel.send(`Set score of ${string[1]} to ${string[2]}`)
         }
         
     
