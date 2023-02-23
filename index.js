@@ -905,6 +905,18 @@ client.on("messageCreate", (message) => {
     }
 })
 client.on("messageCreate", (message) => {
+    if (message.content == "!help") {
+        message.channel.send(`(https://aeolus-1.github.io/infinateMuliMinesweeper/)\nAvalible Commnads are:\n!link\n!leaderboard\n!stats\n!board`)
+    
+    }
+})
+client.on("messageCreate", (message) => {
+    if (message.content == "!link") {
+        message.channel.send(`go to https://aeolus-1.github.io/infinateMuliMinesweeper/`)
+    
+    }
+})
+client.on("messageCreate", (message) => {
     var string = message.content
     string = string.split(" ")
     if (string[0] == "!score") {
