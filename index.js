@@ -895,13 +895,13 @@ client.on("messageCreate", (message) => {
         message.channel.send("getting leaderboard")
 
         var board = getLeaderboard(),
-            text = ""
+            text = "```"
 
         for (let i = 0; i < board.length; i++) {
             const user = board[i];
-            text = text+`\n${user.name} (${user.score})`
+            text = text+`\n${i}. ${user.name} (${user.score})`
         }
-    message.channel.send(text)
+    message.channel.send(text+"```")
     
     }
 })
