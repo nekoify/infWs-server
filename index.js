@@ -38,6 +38,7 @@ var exec = require('child_process').exec;
 require('dotenv').config()
 const process = require("process")
 const express = require('express');
+const puppeteer = require('puppeteer');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
@@ -899,11 +900,42 @@ client.on("messageCreate", (message) => {
 
 client.on("messageCreate", (message) => {
     if (message.content == "!resetBoard") {
+        if ((message.author.id != "416508744097071107") || (message.author.id != "640147303939964930")) return
         mainChunks = new Chunks()
-        chunkData["chunks"] = mainChunks
+        chunkData["chunks"] = mainChunks.chunkMaps
     message.channel.send("done, restarting server...")
     fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
     exec("pm2 restart 9")
+    }
+})
+
+client.on("messageCreate", async (message) => {
+    if (message.content.includes("!board")) {
+        var zoomAmount = message.content.split("!board ")[1]
+        const browser = await puppeteer.launch({
+            args: ['--no-sandbox']
+        });
+        // Create a new page
+        const page = await browser.newPage();
+      
+        // Set viewport width and height
+        await page.setViewport({ width: 1280, height: 720 });
+      
+        const website_url = 'https://aeolus-1.github.io/infinateMuliMinesweeper/';
+      
+        // Open URL in current page
+        await page.goto(website_url, { waitUntil: 'networkidle2' });
+        for (let i = 0; i < Number(zoomAmount); i++) {
+            await page.keyboard.press('NumpadSubtract');
+          }
+        
+
+        // Capture screenshot
+        await page.screenshot({
+          path: 'screenshot.jpg',
+        });
+        await browser.close();
+        message.channel.send({ files: [{ attachment: 'screenshot.jpg' }] });
     }
 })
 
