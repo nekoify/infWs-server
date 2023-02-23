@@ -662,7 +662,7 @@ function modifyScore(id, score) {
 }
 function updateStats(id, statsMod) {
     statsMod = {
-        spacesCleared:0,
+        tilesCleared:0,
         minesFlagged:0,
         minesTriggered:0,
         ...statsMod,
@@ -671,7 +671,7 @@ function updateStats(id, statsMod) {
         name:"unamed",
         score:0,
         stats:{
-            spacesCleared:0,
+            tilesCleared:0,
             minesFlagged:0,
             minesTriggered:0,
         }
@@ -684,7 +684,9 @@ function updateStats(id, statsMod) {
         }
     }
 
-    statsAccount.stats.spacesCleared += statsMod.spacesCleared
+    //S
+
+    statsAccount.stats.tilesCleared += statsMod.tilesCleared
     statsAccount.stats.minesFlagged += statsMod.minesFlagged
     statsAccount.stats.minesTriggered += statsMod.minesTriggered
 }
