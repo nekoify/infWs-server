@@ -951,8 +951,10 @@ client.on("messageCreate", async (message) => {
       
         // Open URL in current page
         await page.goto(website_url, { waitUntil: 'networkidle2' });
+        console.log(zoomAmount)
         for (let i = 0; i < Number(zoomAmount); i++) {
             await page.keyboard.press('NumpadSubtract');
+            console.log("zooming")
           }
         
 
