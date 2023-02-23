@@ -892,6 +892,15 @@ io.on('connection', async(socket) => {
 
 
     });
+    socket.on('requestingChunks', (data) => {
+        data = JSON.parse(data)
+        socket.emit("returningChunks", JSON.stringify({
+            chunks:mainChunks.requestChunks(data.x, data.y, data.width, data.height),
+            leaderboard:getLeaderboard()
+        }))
+
+
+    });
 
     
 
@@ -901,9 +910,7 @@ setInterval(() => {
     var time = ((new Date()).getTime())
     updateTicker -= time-previouseDelta
     previouseDelta = time
-    if (updateTicker > 0) {
-        io.sockets.emit("chunkUpdate", output())
-    } 
+   
     
 }, 1000/SERVER_UPDATES_PER_SECOND);
 
