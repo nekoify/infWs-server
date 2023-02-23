@@ -983,5 +983,13 @@ client.on("messageCreate", async (message) => {
     }
 })
 
+client.on("messageCreate", (message) => {
+    if (message.content == "!resetDb") {
+        accountData[0] = {}
+    message.channel.send("done, restarting server...")
+    fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
+    exec("pm2 restart 9")
+    }
+})
 
 client.login(process.env.TOKEN)
