@@ -27,6 +27,12 @@
 
 */
 
+const atatus = require("atatus-nodejs");
+atatus.start({
+    licenseKey: "lic_apm_c7ead171c6d14a509f211d91de05fadb",
+    appName: "infms",
+});
+
 const SERVER_UPDATES_PER_SECOND = 20
 const CHAINBREAKING_LIMIT = 10
 const RESET_ON_BOMB = false
@@ -231,46 +237,7 @@ function get3dDistance(x, y, z, a, b, c) {
     return Math.sqrt(Math.pow(xd, 2) + Math.pow(yd, 2) + Math.pow(zd, 2))
 }
 
-function getChunkStats() {
-    var chunks = mainChunks.chunkMaps
-    var stats = {
-        tilesUncovered:0,
-        flags:0,
-        minesTriggered:0
-    }
-    function runQuad(quad) {
-        var tiles = new Array()
-        for (let x = 0; x < quad.length; x++) {
-            if (quad[x]!=undefined){
-                for (let y = 0; y < quad[x].length; y++) {
-                    if (quad[x][y] != undefined) {
-                           if (quad[x][y]!=undefined) {
-                                var grid = quad[x][y].grid
-                               for (let x2 = 0; x2 < grid.length; x2++) {
-                                   if (grid[x2]!=undefined){
-                                    for (let y2 = 0; y2 < grid[x2].length; y2++) {
-                                        if (grid[x2][y2]!=undefined) {
-                                            var tile = grid[x2][y2]
-                                            if (tile.uncovered) stats.tilesUncovered++
-                                            if (tile.flagged && !tile.uncovered) stats.flags++
-                                            if (tile.mine && tile.uncovered) stats.minesTriggered++
-                                        }
-                                    }
-                                   }
-                               }
-                           }
-                    }
-                }
-            }
-        }
-        return tiles
-    }
-    runQuad(chunks.x0y0array.array)
-    runQuad(chunks.x1y0array.array)
-    runQuad(chunks.x0y1array.array)
-    runQuad(chunks.x1y1array.array)
-    return stats
-}
+
 
 function getAngle(x, y) {
     return Math.atan2(x.x - y.x, x.y - y.y) / (Math.PI / 180)
@@ -324,7 +291,7 @@ function averageVertices() {
 }
 
 function rotate(cx, cy, x, y, angle) {
-    var radians = angle,
+    let radians = angle,
         cos2 = cos(radians),
         sin2 = sin(radians),
         nx = (cos2 * (x - cx)) + (sin2 * (y - cy)) + cx,
@@ -390,8 +357,8 @@ function lineRect(pos1, pos2, rect, angle=0, ctx) {
 
   
 	// calculate the direction of the lines
-	 var uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
-	 var uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
+    let uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
+    let uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
   
 	// if uA and uB are between 0-1, lines are colliding
 	if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
@@ -415,18 +382,18 @@ function lineRect(pos1, pos2, rect, angle=0, ctx) {
 	  
 	  [a, b].forEach(polygon => {
 		
-		  for (var i1 = 0; i1 < polygon.Points.Count; i1++)
+		  for (let i1 = 0; i1 < polygon.Points.Count; i1++)
 		  {
-			  var i2 = (i1 + 1) % polygon.Points.Count;
-			  var p1 = polygon.Points[i1];
-			  var p2 = polygon.Points[i2];
+              let i2 = (i1 + 1) % polygon.Points.Count;
+			  let p1 = polygon.Points[i1];
+			  let p2 = polygon.Points[i2];
   
-			  var normal = new Point(p2.y - p1.y, p1.x - p2.x);
+			  let normal = new Point(p2.y - p1.y, p1.x - p2.x);
   
-			  var minA = null, maxA = null;
+			  let minA = null, maxA = null;
 			  a.Points.forEach(p => {
 			  
-				  var projected = normal.x * p.x + normal.y * p.y;
+				  let projected = normal.x * p.x + normal.y * p.y;
 				  if (minA == null || projected < minA){
 					  minA = projected;
 				  }
@@ -439,7 +406,7 @@ function lineRect(pos1, pos2, rect, angle=0, ctx) {
 			 maxB = null;
 			 b.Points.foreach(p =>
 			  {
-				  var projected = normal.x * p.x + normal.y * p.y;
+				  let projected = normal.x * p.x + normal.y * p.y;
 				  if (minB == null || projected < minB)
 					  minB = projected;
 				  if (maxB == null || projected > maxB)
@@ -472,7 +439,7 @@ function lineRect(pos1, pos2, rect, angle=0, ctx) {
   }
 
   String.prototype.hashCode = function() {
-  var hash = 0,
+  let hash = 0,
     i, chr;
   if (this.length === 0) return hash;
   for (i = 0; i < this.length; i++) {
@@ -536,7 +503,7 @@ function tileArray2d(e, t, n, r, c) {
 
 function cTile(e, t) {
     this.pos = v(e, t)
-    var dst = getDst(v(0,0),v(e,t))*0.2,
+    let dst = getDst(v(0,0),v(e,t))*0.2,
         num = 7-Math.pow(Math.sqrt(dst*0.13),3.2)
     this.mine = Math.random()<(1/num)
     this.uncovered = false
@@ -667,7 +634,7 @@ function updateStats(id, statsMod) {
         minesTriggered:0,
         ...statsMod,
     }
-    var statsAccount = accountData[id]||({
+    let statsAccount = accountData[id]||({
         name:"unamed",
         score:0,
         stats:{
@@ -704,32 +671,32 @@ function getLeaderboard() {
     }
     //=============================
 */
-    var players = (Object.keys(accountData)).map((e)=>{return accountData[e]})
+    let players = (Object.keys(accountData)).map((e)=>{return accountData[e]})
     return players.sort((a,b)=>{return -Math.sign(a.score-b.score)})
 
     
 }
 
 function getChunkStats() {
-    var chunks = mainChunks.chunkMaps
-    var stats = {
+    let chunks = mainChunks.chunkMaps
+    let stats = {
         tilesUncovered:0,
         flags:0,
         minesTriggered:0
     }
     function runQuad(quad) {
-        var tiles = new Array()
+        let tiles = new Array()
         for (let x = 0; x < quad.length; x++) {
             if (quad[x]!=undefined){
                 for (let y = 0; y < quad[x].length; y++) {
                     if (quad[x][y] != undefined) {
                            if (quad[x][y]!=undefined) {
-                                var grid = quad[x][y].grid
+                            let grid = quad[x][y].grid
                                for (let x2 = 0; x2 < grid.length; x2++) {
                                    if (grid[x2]!=undefined){
                                     for (let y2 = 0; y2 < grid[x2].length; y2++) {
                                         if (grid[x2][y2]!=undefined) {
-                                            var tile = grid[x2][y2]
+                                            let tile = grid[x2][y2]
                                             if (tile.uncovered) stats.tilesUncovered++
                                             if (tile.flagged && !tile.uncovered) stats.flags++
                                             if (tile.mine && tile.uncovered) stats.minesTriggered++
@@ -769,7 +736,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
     acknowledgeAccount(user.id, user.name)
     
 
-    var tile = mainChunks.requestTile(data.pos.x,data.pos.y),
+    let tile = mainChunks.requestTile(data.pos.x,data.pos.y),
         count = countNeighbours(v(data.pos.x,data.pos.y))
 
         if (!tile.uncovered) {
@@ -802,10 +769,10 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                     })
                 }
                 if (tile.count==0&&!tile.mine) {
-                    var neis = getNeighbours(v(data.pos.x,data.pos.y))
+                    let neis = getNeighbours(v(data.pos.x,data.pos.y))
                     for (let i = 0; i < neis.length; i++) {
                         const nei = neis[i];
-                        var neiTile = mainChunks.requestTile(nei.x, nei.y)
+                        let neiTile = mainChunks.requestTile(nei.x, nei.y)
                         
                         if (!neiTile.uncovered && tick>0) {
                             inputClick({
@@ -826,7 +793,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
 } 
 function getNeighbours(tilePos) {
     
-    var neighbours = [
+    let neighbours = [
         v(1,1),v(0,1),v(-1,1),
         v(1,0),v(-1,0),
         v(1,-1),v(0,-1),v(-1,-1),
@@ -842,13 +809,13 @@ function getNeighbours(tilePos) {
     return neighbours
 }
 function countNeighbours(tilePos) {
-    var tile = mainChunks.requestTile(tilePos.x,tilePos.y),
+    let tile = mainChunks.requestTile(tilePos.x,tilePos.y),
         neighbours = [
             v(1,1),v(0,1),v(-1,1),
             v(1,0),v(-1,0),
             v(1,-1),v(0,-1),v(-1,-1),
         ]
-        var count = 0
+        let count = 0
     for (let i = 0; i < neighbours.length; i++) {
         const nei = neighbours[i];
         let pos = v(
@@ -964,11 +931,13 @@ client.on("messageCreate", (message) => {
     
     } else if (string.length==1 && string[0]=="!stats") {
         try {
+            var first = Date.now()
             var stats = getChunkStats()
         } catch (error) {
             message.channel.send("error getting stats (maybe empty chunks)")
         }
-        message.channel.send(`__Global Stats__\n${stats.tilesUncovered} blocks uncovered, ${stats.flags} flags placed, ${stats.minesTriggered} mines triggered`)
+        var timeTaken = Date.now() - first
+        message.channel.send(`__Global Stats__\n${stats.tilesUncovered} blocks uncovered, ${stats.flags} flags placed, ${stats.minesTriggered} mines triggered \n Time taken: ${timeTaken}ms`)
 
     }
 
