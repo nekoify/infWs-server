@@ -904,7 +904,8 @@ client.on("messageCreate", (message) => {
     }
 })
 client.on("messageCreate", (message) => {
-    message.content = message.content.split(" ")
+    var string = message.content
+    string = message.content.split(" ")
     if (message.content[0] == "!score") {
         var names = {},
             ids = Object.keys(accountData)
