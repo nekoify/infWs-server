@@ -1011,18 +1011,13 @@ client.on("messageCreate", (message) => {
 
 client.on("messageCreate", (message) => {
     if (message.content == "!resetBoard") {
+        if (message.author.id == "640147303939964930" || message.author.id == "416508744097071107") {
         mainChunks = new Chunks()
         chunkData["chunks"] = mainChunks.chunkMaps
     message.channel.send("done, restarting server...")
     fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
     exec("pm2 restart 9")
-    }
-})
-
-client.on("messageCreate", (message) => {
-    if (message.content == "!resetAllAccounts") {
-        if ((message.author.id != "416508744097071107") || (message.author.id != "640147303939964930")) return
-        accountData = {}
+        }
     }
 })
 
@@ -1064,20 +1059,21 @@ client.on("messageCreate", async (message) => {
 
 client.on("messageCreate", (message) => {
     if (message.content == "!resetDb") {
+        if (message.author.id == "640147303939964930" || message.author.id == "416508744097071107") {
         accountData = {}
     message.channel.send("done, restarting server...")
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
     exec("pm2 restart 9")
+        }
     }
 })
 
 client.on("messageCreate", (message) => {
     console.log(message.author.id)
     if (message.content == "!test") {
-        console.log((message.author.id != "416508744097071107"))
-        console.log((message.author.id != "416508744097071107" || message.author.id != "640147303939964930"))
-        if ((message.author.id != "416508744097071107") || (message.author.id != "640147303939964930")) return
-        console.log("test")
+    if (message.author.id == "640147303939964930" || message.author.id == "416508744097071107") {
+    message.channel.send("test")
+    }
     }
 })
 
