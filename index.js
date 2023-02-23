@@ -890,6 +890,8 @@ client.on("messageCreate", (message) => {
 })
 client.on("messageCreate", (message) => {
     if (message.content == "!leaderboard") {
+        message.channel.send("getting leaderboard")
+
         var board = getLeaderboard(),
             text = ""
 
