@@ -674,7 +674,7 @@ function updateStats(id, statsMod) {
     });
     if (statsAccount.stats == undefined) {
         statsAccount.stats = {
-            spacesCleared:0,
+            tilesCleared:0,
             minesFlagged:0,
             minesTriggered:0,
         }
@@ -769,8 +769,17 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
         if (!tile.uncovered) {
             if (data.flag) {
                 tile.flagged = !tile.flagged
+                if (tile.flaggedBy != data.name) {
+                    updateStats(user.id, {
+                        minesFlagged:1,
+                    })
+                }
                 tile.flaggedBy = data.name
+                
             } else if (!tile.flagged) {
+                updateStats(user.id, {
+                    tilesCleared:1,
+                })
                 tile.uncovered = true
                 tile.count = count
                 if (tile.count>0 && tick==CHAINBREAKING_LIMIT) {
@@ -782,6 +791,9 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                 }
                 if (tile.mine) {
                     s(TRIGGER_MINE_REWARD)
+                    updateStats(user.id, {
+                        minesTriggered:1,
+                    })
                 }
                 if (tile.count==0&&!tile.mine) {
                     var neis = getNeighbours(v(data.pos.x,data.pos.y))
@@ -933,7 +945,7 @@ client.on("messageCreate", (message) => {
             var id = names[string[1]]
             updateStats(id)
             var stats = accountData[id].stats
-            message.channel.send(`__Stats for ${string[1]}__\nTile Cleared: ${stats.tilesUncovered}\nMines Flagged: ${stats.minesFlagged}\nMines Triggered: ${stats.minesTriggered}\n`)
+            message.channel.send(`__Stats for ${string[1]}__\nTile Cleared: ${stats.tilesCleared}\nMines Flagged: ${stats.minesFlagged}\nMines Triggered: ${stats.minesTriggered}\n`)
         }
         
     
