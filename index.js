@@ -868,6 +868,7 @@ setInterval(() =>{
 
 client.on("ready", ()=>{
     console.log(`Logged in as ${client.user.tag}!`);
+    client.user.setPresence({ activities: [{ name: 'https://aeolus-1.github.io/infinateMuliMinesweeper/', }], status: 'available' });
 })
 
 client.on("messageCreate", (message) => {
@@ -919,7 +920,7 @@ client.on("messageCreate", (message) => {
             message.channel.send(`Failed to set ${string[1]}'s score. Doesn't exist`)
         } else {
             var id = names[string[1]]
-            accountData[id].score = parseInt(string[1])
+            accountData[id].score = parseInt(string[2])
             message.channel.send(`Set score of ${string[1]} to ${string[2]}`)
         }
         
