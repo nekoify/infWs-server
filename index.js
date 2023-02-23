@@ -931,7 +931,6 @@ client.on("messageCreate", (message) => {
 
 client.on("messageCreate", (message) => {
     if (message.content == "!resetBoard") {
-        if ((message.author.id != "416508744097071107") || (message.author.id != "640147303939964930")) return
         mainChunks = new Chunks()
         chunkData["chunks"] = mainChunks.chunkMaps
     message.channel.send("done, restarting server...")
@@ -985,10 +984,20 @@ client.on("messageCreate", async (message) => {
 
 client.on("messageCreate", (message) => {
     if (message.content == "!resetDb") {
-        accountData[0] = {}
+        accountData = {}
     message.channel.send("done, restarting server...")
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
     exec("pm2 restart 9")
+    }
+})
+
+client.on("messageCreate", (message) => {
+    console.log(message.author.id)
+    if (message.content == "!test") {
+        console.log((message.author.id != "416508744097071107"))
+        console.log(((message.author.id != "416508744097071107") || (message.author.id != "640147303939964930")))
+        if ((message.author.id != "416508744097071107") || (message.author.id != "640147303939964930")) return
+        console.log("test")
     }
 })
 
