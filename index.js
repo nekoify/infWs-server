@@ -969,7 +969,7 @@ client.on("messageCreate", (message) => {
 })
 client.on("messageCreate", (message) => {
     if (message.content == "!help") {
-        message.channel.send(`(https://aeolus-1.github.io/infinateMuliMinesweeper/)\nAvalible Commnads are:\n!link\n!leaderboard\n!stats\n!board`)
+        message.channel.send(`(https://aeolus-1.github.io/infinateMuliMinesweeper/)\nAvalible Commnads are:\n!link\n!help\n!ping\n!leaderboard\n!stats {username (or leave it blank for global stats)}\n!board`)
     
     }
 })
