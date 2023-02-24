@@ -945,7 +945,7 @@ client.on("messageCreate", (message) => {
             updateStats(id)
             var stats = accountData[id].stats
             let successPer = (100 - ((stats.minesTriggered / stats.tilesCleared) * 100)).toFixed(2)
-            message.channel.send(`__Stats for ${string[1]}__\nTile Cleared: ${stats.tilesCleared}\nMines Flagged: ${stats.minesFlagged}\nMines Triggered: ${stats.minesTriggered}\n Success Percentage: ${successPer}%`)
+            message.channel.send(`__Stats for ${string[1]}__\nTile Cleared: ${stats.tilesCleared}\nMines Flagged: ${stats.minesFlagged}\nMines Triggered: ${stats.minesTriggered}\nSuccess Percentage: ${successPer}%\n`)
         }
         
     
@@ -981,7 +981,7 @@ client.on("messageCreate", (message) => {
 
         for (let i = 0; i < board.length; i++) {
             const user = board[i];
-            text = text+`\n> ${i}. ${user.name} (${user.score})`
+            text = text+`\n> ${i+1}. ${user.name} (${user.score})`
         }
     message.channel.send(text)
     
