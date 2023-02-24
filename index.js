@@ -46,7 +46,9 @@ const process = require("process")
 const express = require('express');
 const puppeteer = require('puppeteer');
 const app = express();
+const os = require('os')
 const http = require('http');
+const fetch = require("cross-fetch")
 const server = http.createServer(app);
 const fs = require("fs")
 var accountData = require(`${__dirname}/account.json`)
@@ -605,6 +607,7 @@ function acknowledgeAccount(id, name) {
     accountData[id] = accountData[id]||({
         name:name,
         score:0,
+        coins:0,
         stats:{
             tilesCleared:0,
             minesFlagged:0,
@@ -614,18 +617,31 @@ function acknowledgeAccount(id, name) {
     accountData[id].name = name
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
 }
-function modifyScore(id, score) {
+function modifyScore(id, score, type) {
+    console.log(id, score, type)
     accountData[id] = accountData[id]||({
         name:"unamed",
         score:0,
+        coins:0,
         stats:{
             tilesCleared:0,
             minesFlagged:0,
             minesTriggered:0,
         }
     });
-    accountData[id].score = clamp(accountData[id].score+score,0, Infinity)
-    fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
+    if (type == "bomb") {
+        console.log("bomb")
+        console.log(accountData[id].coins+score)
+        accountData[id].score = clamp(accountData[id].score+score,0, Infinity)
+        fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
+    } else {
+        console.log("no bomb")
+        console.log(accountData[id].coins+score)
+        accountData[id].score = clamp(accountData[id].score+score,0, Infinity)
+        accountData[id].coins = clamp(accountData[id].coins+score,0, Infinity)
+        fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
+    }
+    
 }
 function updateStats(id, statsMod) {
     statsMod = {
@@ -637,6 +653,7 @@ function updateStats(id, statsMod) {
     let statsAccount = accountData[id]||({
         name:"unamed",
         score:0,
+        coins:0,
         stats:{
             tilesCleared:0,
             minesFlagged:0,
@@ -731,7 +748,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
         name:data.name,
     }
 
-    function s(s) {modifyScore(user.id, s)}
+    function s(s, type) {modifyScore(user.id, s, type)}
 
     acknowledgeAccount(user.id, user.name)
     
@@ -756,14 +773,14 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                 tile.uncovered = true
                 tile.count = count
                 if (tile.count>0 && tick==CHAINBREAKING_LIMIT) {
-                    s(TILE_CLEAR_REWARD)
+                    s(TILE_CLEAR_REWARD, "notbomb")
                 }
                 if (tile.mine && RESET_ON_BOMB) {
                     mainChunks = new Chunks()
                     return
                 }
                 if (tile.mine) {
-                    s(TRIGGER_MINE_REWARD)
+                    s(TRIGGER_MINE_REWARD, "bomb")
                     updateStats(user.id, {
                         minesTriggered:1,
                     })
@@ -869,6 +886,8 @@ io.on('connection', async(socket) => {
 
     });
 
+
+
     
 
 })
@@ -925,7 +944,8 @@ client.on("messageCreate", (message) => {
             var id = names[string[1]]
             updateStats(id)
             var stats = accountData[id].stats
-            message.channel.send(`__Stats for ${string[1]}__\nTile Cleared: ${stats.tilesCleared}\nMines Flagged: ${stats.minesFlagged}\nMines Triggered: ${stats.minesTriggered}\n`)
+            let successPer = (100 - ((stats.minesTriggered / stats.tilesCleared) * 100)).toFixed(2)
+            message.channel.send(`__Stats for ${string[1]}__\nTile Cleared: ${stats.tilesCleared}\nMines Flagged: ${stats.minesFlagged}\nMines Triggered: ${stats.minesTriggered}\n Success Percentage: ${successPer}%`)
         }
         
     
@@ -977,6 +997,12 @@ client.on("messageCreate", (message) => {
     if (message.content == "!link") {
         message.channel.send(`go to https://aeolus-1.github.io/infinateMuliMinesweeper/`)
     
+    } else if (message.content == "!mem") {
+let osFreeMem = os.freemem()
+let allFreeMem = (osFreeMem / (1024 * 1024))
+let osTotalMem = os.totalmem()
+let avbMem = (osTotalMem / (1024 * 1024))
+message.channel.send(`Total free memory: ${allFreeMem}\nTotal available RAM: ${avbMem}`)
     }
 })
 client.on("messageCreate", (message) => {
