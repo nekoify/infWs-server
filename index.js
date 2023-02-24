@@ -613,6 +613,9 @@ function acknowledgeAccount(id, name) {
             minesFlagged:0,
             minesTriggered:0,
         },
+        ownData = {
+            1:true,
+        }
     });
     accountData[id].name = name
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
@@ -627,6 +630,9 @@ function modifyScore(id, score, type) {
             tilesCleared:0,
             minesFlagged:0,
             minesTriggered:0,
+        },
+        ownData = {
+            1:true,
         }
     });
     if (type == "bomb") {
@@ -658,6 +664,9 @@ function updateStats(id, statsMod) {
             tilesCleared:0,
             minesFlagged:0,
             minesTriggered:0,
+        },
+        ownData = {
+            1:true,
         }
     });
     if (statsAccount.stats == undefined) {
@@ -848,7 +857,7 @@ function countNeighbours(tilePos) {
 function output() {
     return JSON.stringify({
         chunks:mainChunks,
-        leaderboard:getLeaderboard(),
+        leaderboard:accountData,
     })
 }
 
@@ -880,7 +889,7 @@ io.on('connection', async(socket) => {
         data = JSON.parse(data)
         socket.emit("returningChunks", JSON.stringify({
             chunks:mainChunks.requestChunks(data.x, data.y, data.width, data.height),
-            leaderboard:getLeaderboard()
+            leaderboard:accountData
         }))
 
 
