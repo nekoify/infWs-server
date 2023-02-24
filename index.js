@@ -1002,6 +1002,29 @@ client.on("messageCreate", (message) => {
         }
     }
 })
+client.on("messageCreate", (message) => {
+    var string = message.content
+    string = string.split(" ")
+    if (string[0] == "!deleteUser") {
+        if (message.author.id == "640147303939964930" || message.author.id == "416508744097071107") {
+        var names = {},
+            ids = Object.keys(accountData)
+        for (let i = 0; i < ids.length; i++) {
+            const account = accountData[ids[i]]
+            names[account.name] = ids[i]
+        }
+        
+        if (names[string[1]]==undefined) {
+            message.channel.send(`Failed to delete ${string[1]}. Doesn't exist`)
+        } else {
+            var id = names[string[1]]
+            delete accountData[id]
+            message.channel.send(`Deleted ${string[1]}`)
+        }
+        
+        }
+    }
+})
 
 
 client.on("messageCreate", (message) => {
