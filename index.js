@@ -857,7 +857,7 @@ function countNeighbours(tilePos) {
 function output() {
     return JSON.stringify({
         chunks:mainChunks,
-        leaderboard:getLeaderboard(),
+        leaderboard:accountData,
     })
 }
 
