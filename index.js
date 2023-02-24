@@ -863,7 +863,7 @@ io.on('connection', async(socket) => {
         data = JSON.parse(data)
         socket.emit("returningChunks", JSON.stringify({
             chunks:mainChunks.requestChunks(data.x, data.y, data.width, data.height),
-            leaderboard:getLeaderboard()
+            leaderboard:accountData
         }))
 
 
