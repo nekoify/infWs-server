@@ -998,7 +998,7 @@ client.on("messageCreate", (message) => {
             updateStats(id)
             var stats = accountData[id].stats
             let successPer = (100 - ((stats.minesTriggered / stats.tilesCleared) * 100)).toFixed(2)
-            message.channel.send(`__Stats for ${string[1]}__\nTile Cleared: ${stats.tilesCleared}\nMines Flagged: ${stats.minesFlagged}\nMines Triggered: ${stats.minesTriggered}\nSuccess Percentage: ${successPer}%\n`)
+            message.channel.send(`__Stats for ${string[1]}__\n🪙 Coins: ${accountData[id].coins}\nTile Cleared: ${stats.tilesCleared}\nMines Flagged: ${stats.minesFlagged}\nMines Triggered: ${stats.minesTriggered}\nSuccess Percentage: ${successPer}%\n`)
         }
         
     
@@ -1076,6 +1076,29 @@ client.on("messageCreate", (message) => {
             var id = names[string[1]]
             accountData[id].score = parseInt(string[2])
             message.channel.send(`Set score of ${string[1]} to ${string[2]}`)
+        }
+        
+        }
+    }
+})
+client.on("messageCreate", (message) => {
+    var string = message.content
+    string = string.split(" ")
+    if (string[0] == "!coins") {
+        if (message.author.id == "640147303939964930" || message.author.id == "416508744097071107") {
+        var names = {},
+            ids = Object.keys(accountData)
+        for (let i = 0; i < ids.length; i++) {
+            const account = accountData[ids[i]]
+            names[account.name] = ids[i]
+        }
+        
+        if (names[string[1]]==undefined) {
+            message.channel.send(`Failed to set ${string[1]}'s coins. Doesn't exist`)
+        } else {
+            var id = names[string[1]]
+            accountData[id].score = parseInt(string[2])
+            message.channel.send(`Set coins of ${string[1]} to ${string[2]}`)
         }
         
         }
