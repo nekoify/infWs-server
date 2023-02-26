@@ -613,7 +613,7 @@ function acknowledgeAccount(id, name) {
             minesFlagged:0,
             minesTriggered:0,
         },
-        ownData = {
+        ownData: {
             1:true,
         }
     });
@@ -631,7 +631,7 @@ function modifyScore(id, score, type) {
             minesFlagged:0,
             minesTriggered:0,
         },
-        ownData = {
+        ownData: {
             1:true,
         }
     });
@@ -665,7 +665,7 @@ function updateStats(id, statsMod) {
             minesFlagged:0,
             minesTriggered:0,
         },
-        ownData = {
+        ownData: {
             1:true,
         }
     });
