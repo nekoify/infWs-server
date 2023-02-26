@@ -517,6 +517,7 @@ function cTile(e, t) {
     this.mine = Math.random()<(1/num)
     this.uncovered = false
     this.flagged = false
+    this.lootBox = (Math.random()<(1.5/100))?1:false
     this.flaggedBy = null
 }
 function cChunk(e, t) {
