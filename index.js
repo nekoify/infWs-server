@@ -40,6 +40,13 @@ const RESET_ON_BOMB = false
 const TILE_CLEAR_REWARD = 1
 const TRIGGER_MINE_REWARD = -25
 
+const FLAG_COSTS = {
+    1:0,
+    2:50,
+    3:50,
+    4:250,
+}
+
 var exec = require('child_process').exec;
 require('dotenv').config()
 const process = require("process")
@@ -613,10 +620,13 @@ function acknowledgeAccount(id, name) {
             minesFlagged:0,
             minesTriggered:0,
         },
-        ownData = {
+        ownData:{
             1:true,
-        }
+        },
+        selectedFlag:1,
     });
+    accountData[id].owns = accountData[id].owns||[]
+    accountData[id].selectedFlag = accountData[id].selectedFlag||1
     accountData[id].name = name
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
 }
@@ -631,9 +641,10 @@ function modifyScore(id, score, type) {
             minesFlagged:0,
             minesTriggered:0,
         },
-        ownData = {
+        ownData:{
             1:true,
-        }
+        },
+        selectedFlag:1,
     });
     if (type == "bomb") {
         console.log("bomb")
@@ -665,9 +676,10 @@ function updateStats(id, statsMod) {
             minesFlagged:0,
             minesTriggered:0,
         },
-        ownData = {
+        ownData:{
             1:true,
-        }
+        },
+        selectedFlag:1,
     });
     if (statsAccount.stats == undefined) {
         statsAccount.stats = {
@@ -697,7 +709,7 @@ function getLeaderboard() {
     }
     //=============================
 */
-    let players = (Object.keys(accountData)).map((e)=>{return accountData[e]})
+    let players = ((Object.keys(accountData)).map((e)=>{return accountData[e]})).filter(a=>{return a.score>2})
     return players.sort((a,b)=>{return -Math.sign(a.score-b.score)})
 
     
@@ -883,6 +895,38 @@ io.on('connection', async(socket) => {
         data = JSON.parse(data)
         inputClick(data)
 
+
+    });
+    socket.on('setFlagselection', (data) => {
+        data = JSON.parse(data)
+        if (accountData[data.id]!=undefined) {
+            accountData[data.id].selectedFlag = accountData[data.id].selectedFlag||1
+         if(accountData[data.id].owns[data.selectedFlag]) {
+            accountData[data.id].selectedFlag = data.selection
+            }
+        }
+
+
+    });
+    socket.on('buyFlag', (data) => {
+        data = JSON.parse(data)
+        if (accountData[data.id]) {
+            var flagChoice = data.buySelection,
+            money = accountData[data.id].coins
+
+            function buy(account, cost) {
+                if (account.coins>=cost) {
+                    return account.coins -= cost
+                } else return false
+            }
+            if (buy(accountData[data.id], FLAG_COSTS[flagChoice])){
+                accountData[id].owns[flagChoice] = true
+            }
+
+        } else {
+            throw console.error("account id not found uwu")
+        }
+        
 
     });
     socket.on('requestingChunks', (data) => {
