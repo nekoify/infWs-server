@@ -901,7 +901,7 @@ io.on('connection', async(socket) => {
         data = JSON.parse(data)
         if (accountData[data.id]!=undefined) {
             accountData[data.id].selectedFlag = accountData[data.id].selectedFlag||1
-         if(accountData[data.id].owns[data.selectedFlag]) {
+         if(accountData[data.id].owns[data.selection]) {
             accountData[data.id].selectedFlag = data.selection
             }
         }
