@@ -40,11 +40,30 @@ const RESET_ON_BOMB = false
 const TILE_CLEAR_REWARD = 1
 const TRIGGER_MINE_REWARD = -25
 
-const FLAG_COSTS = {
-    1:0,
-    2:50,
-    3:50,
-    4:250,
+var shopData = {
+    flags:{
+        1:{
+            bought:true,
+            name:"Defualt",
+            cost:0,
+            src:"flag.png",
+        },
+        2:{
+            name:"Purple",
+            cost:200,
+            src:"./flags/purp.png",
+        },
+        3:{
+            name:"Orange",
+            cost:200,
+            src:"./flags/orange.png",
+        },
+        4:{
+            name:"Ukraine",
+            cost:500,
+            src:"./flags/ukraine.png",
+        },
+    }
 }
 
 var exec = require('child_process').exec;
@@ -62,6 +81,8 @@ var accountData = require(`${__dirname}/account.json`)
 const chunkData = require(`${__dirname}/chunks.json`)
 const { Client, Intents, MessageEmbed, MessageAttachment } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+
+
 
 function createElementFromHTML(htmlString) {
 	var div = document.createElement('div');
@@ -756,7 +777,15 @@ function getChunkStats() {
     return stats
 }
 
+function buy(account, cost) {
+    if (account.coins>=cost) {
+        let cost = account.coins -= cost
+        account.coins = cost
+        fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
+        return cost
 
+    } else return false
+}
 
 var mainChunks = new Chunks(),
     updateTicker = 1000,
@@ -911,16 +940,9 @@ io.on('connection', async(socket) => {
     socket.on('buyFlag', (data) => {
         data = JSON.parse(data)
         if (accountData[data.id]) {
-            var flagChoice = data.buySelection,
-            money = accountData[data.id].coins
-
-            function buy(account, cost) {
-                if (account.coins>=cost) {
-                    return account.coins -= cost
-                } else return false
-            }
-            if (buy(accountData[data.id], FLAG_COSTS[flagChoice])){
-                accountData[id].owns[flagChoice] = true
+            var flagChoice = data.buySelection
+            if (buy(accountData[data.id], shopData[flagChoice])){
+                accountData[data.id].owns[flagChoice] = true
             }
 
         } else {
@@ -962,6 +984,7 @@ server.listen(process.env.PORT || 8085, () => {
 setInterval(() =>{
     chunkData["chunks"] = mainChunks.chunkMaps
     fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
+    fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
 },30000)
 
 client.on("ready", ()=>{
@@ -1097,7 +1120,7 @@ client.on("messageCreate", (message) => {
             message.channel.send(`Failed to set ${string[1]}'s coins. Doesn't exist`)
         } else {
             var id = names[string[1]]
-            accountData[id].score = parseInt(string[2])
+            accountData[id].coins = parseInt(string[2])
             message.channel.send(`Set coins of ${string[1]} to ${string[2]}`)
         }
         
