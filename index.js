@@ -538,7 +538,7 @@ function cTile(e, t) {
     this.mine = Math.random()<(1/num)
     this.uncovered = false
     this.flagged = false
-    this.lootBox = (Math.random()<(1.5/100))?1:false
+    this.lootBox = (Math.random()<(0.5/100))?1:false
     this.flaggedBy = null
 }
 function cChunk(e, t) {
@@ -778,12 +778,16 @@ function getChunkStats() {
     return stats
 }
 
-function buy(account, cost) {
-    if (account.coins>=cost) {
-        let cost = account.coins -= cost
-        account.coins = cost
+function buy(id, cost) {
+    console.log("func")
+    console.log(accountData[id].coins>=cost)
+    console.log(accountData[id].coins, cost)
+    if (accountData[id].coins>=cost) {
+        let costCalc = accountData[id].coins -= cost
+        console.log(costCalc)
+        accountData[id].coins = costCalc
         fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
-        return cost
+        return costCalc
 
     } else return false
 }
@@ -852,7 +856,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                         }
                     }
                 }
-            }
+          }
             
         } else tile.flagged = false
 
@@ -939,10 +943,14 @@ io.on('connection', async(socket) => {
 
     });
     socket.on('buyFlag', (data) => {
+        console.log("event got")
         data = JSON.parse(data)
         if (accountData[data.id]) {
+            console.log("yep")
             var flagChoice = data.buySelection
-            if (buy(accountData[data.id], shopData[flagChoice])){
+	    console.log(flagChoice)
+	    console.log(shopData.flags[flagChoice])
+            if (buy(data.id, shopData.flags[flagChoice].cost)){
                 accountData[data.id].owns[flagChoice] = true
             }
 
