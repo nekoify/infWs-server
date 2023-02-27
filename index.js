@@ -820,6 +820,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                     })
                 }
                 tile.flaggedBy = data.name
+                tile.flaggedById = data.id
                 
             } else if (!tile.flagged) {
                 updateStats(user.id, {
