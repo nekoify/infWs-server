@@ -995,6 +995,7 @@ io.on('connection', async(socket) => {
 	    console.log(shopData.flags[flagChoice])
             if (buy(data.id, shopData.flags[flagChoice].cost)){
                 accountData[data.id].owns[flagChoice] = true
+                fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
             }
 
         } else {
