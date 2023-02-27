@@ -836,6 +836,10 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                         minesTriggered:1,
                     })
                 }
+                if (tile.lootBox) {
+                    var loot = openLootbox()
+                    
+                }
                 if (tile.count==0&&!tile.mine) {
                     let neis = getNeighbours(v(data.pos.x,data.pos.y))
                     for (let i = 0; i < neis.length; i++) {
@@ -903,6 +907,47 @@ function output() {
     })
 }
 
+
+function openLootbox() {
+    var things = {
+        coins:{
+            name:"some coins",
+            id:"coins",
+            weight:0.65
+        },
+        commonflag:{
+            name:"a common flag",
+            id:"commonflag",
+            weight:0.5
+        },
+        rareflag:{
+            name:"a rare flag",
+            id:"rareflag",
+            weight:0.1
+        },
+    },
+    total = 0
+    Object.keys(things).forEach(function(key, index) {total+=things[key].weight});
+    Object.keys(things).forEach(function(key, index) {
+        things[key].weight /= total;
+      });
+    var rand = Math.random(),
+      items = Object.keys(things),
+        choice = "",
+        value = 0
+    items.forEach((key, index)=>{
+        var lowerBounds = value,
+            upperBounds = value+(things[key].weight)
+
+        if (rand>lowerBounds&&rand<upperBounds) {
+            choice = things[key]
+        }
+        value+=(things[key].weight)
+
+    })
+    return choice
+}
+
 const io = require("socket.io")(server, {
     cors: {
         origin: "*"
@@ -924,8 +969,6 @@ io.on('connection', async(socket) => {
     socket.on('makeClick', (data) => {
         data = JSON.parse(data)
         inputClick(data)
-
-
     });
     socket.on('setFlagselection', (data) => {
         data = JSON.parse(data)
@@ -942,7 +985,7 @@ io.on('connection', async(socket) => {
         data = JSON.parse(data)
         if (accountData[data.id]) {
             var flagChoice = data.buySelection
-            if (buy(accountData[data.id], shopData[flagChoice])){
+            if (true){//buy(accountData[data.id], shopData[flagChoice])){
                 accountData[data.id].owns[flagChoice] = true
             }
 
