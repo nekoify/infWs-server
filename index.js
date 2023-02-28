@@ -12,7 +12,7 @@
 │        ├                                         │        │
 │        │                                         │        │
 │        │  ◄──────────────────────────────────────┤        │ ◄───┐    ┌────────┐
-│        │           Spam all clients              │        │     └────┤ Chunks │
+│        │           send stuff           │        │     └────┤ Chunks │
 │ Client │                                         │ Server │          └────────┘
 │        │                                         │        │              ▲
 │        │                                         │        │              │
@@ -1093,9 +1093,9 @@ app.get('/', (req, res) => {
     res.send('server');
 });
 
-app.get('/update', (req, res) => {
+app.post('/update', (req, res) => {
     console.log("got webhook ping form github")
-    console.log(req)
+    console.log(req.body)
 });
 
 io.on('connection', async(socket) => {
