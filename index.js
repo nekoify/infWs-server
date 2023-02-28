@@ -1087,6 +1087,11 @@ app.get('/', (req, res) => {
     res.send('server');
 });
 
+app.get('/update', (req, res) => {
+    console.log("got webhook ping form github")
+    console.log(req)
+});
+
 io.on('connection', async(socket) => {
     updateTicker = 2000
     socket.on("account", (data) => {
