@@ -884,6 +884,12 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
     let tile = mainChunks.requestTile(data.pos.x,data.pos.y),
         count = countNeighbours(v(data.pos.x,data.pos.y))
 
+        if (tile.lootBox) {
+            var loot = openLootbox()
+            isLootBox = true
+            
+        }
+
         if (!tile.uncovered) {
             if (data.flag) {
                 tile.flagged = !tile.flagged
@@ -914,11 +920,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                         minesTriggered:1,
                     })
                 }
-                if (tile.lootBox) {
-                    var loot = openLootbox()
-                    isLootBox = true
-                    
-                }
+                
                 if (tile.count==0&&!tile.mine) {
                     let neis = getNeighbours(v(data.pos.x,data.pos.y))
                     for (let i = 0; i < neis.length; i++) {
