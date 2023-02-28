@@ -870,7 +870,7 @@ function receveLootBox(item, id) {
         return "30 coins"
     } else {
         var newFlag = pickRandomFlag(
-            (item.item.id=="commonFlag")?flags.common:flags.rare
+            (item.id=="commonFlag")?flags.common:flags.rare
         )
 
         accountData[id].owns[newFlag] = true
