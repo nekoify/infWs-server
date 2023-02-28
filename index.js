@@ -863,6 +863,52 @@ function buy(id, cost) {
     } else return false
 }
 
+function receveLootBox(item, id) {
+    var flags = getAvalibleFlags(accountData[multiplayerId].owns)
+    if (item.item.id == "coins") {
+        accountData[id].coins += 30
+        return "30 coins"
+    } else {
+        var newFlag = pickRandomFlag(
+            (item.item.id=="commonFlag")?flags.common:flags.rare
+        )
+
+        accountData[id].owns[newFlag] = true
+
+        return shopData.flags[newFlag]
+    }
+    
+}
+function getAvalibleFlags(owns) {
+    var commonFlags = [1,2,3,4,5,6,7,8,9,10],
+        rareFlags = [11,12,13,14,15,16]
+
+    for (let i = 0; i < commonFlags.length; i++) {
+        const cF = commonFlags[i];
+        if (owns[cF]) {
+            commonFlags.splice(i, 1)
+            i--
+        }
+    }
+    for (let i = 0; i < rareFlags.length; i++) {
+        const cF = rareFlags[i];
+        if (owns[cF]) {
+            rareFlags.splice(i, 1)
+        }
+    }
+
+    return {
+        common:commonFlags,
+        rare:rareFlags
+    }
+}
+
+function pickRandomFlag(flags) {
+    return flags[randInt(0,flags.length-1)]
+}
+
+
+
 var mainChunks = new Chunks(),
     updateTicker = 1000,
     previouseDelta = (new Date()).getTime()
@@ -885,7 +931,6 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
         count = countNeighbours(v(data.pos.x,data.pos.y))
 
         if (tile.lootBox) {
-            var loot = openLootbox()
             isLootBox = true
             
         }
@@ -1052,8 +1097,10 @@ io.on('connection', async(socket) => {
         data = JSON.parse(data)
         var lootBox = inputClick(data)
         if (lootBox) {
+            var item = receveLootBox(openLootbox())
+            
             socket.emit("openedLootbox", JSON.stringify({
-                item:openLootbox()
+                item:item,
             }))
         }
     });
