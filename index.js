@@ -1089,7 +1089,8 @@ app.get('/', (req, res) => {
 
 app.post('/update', (req, res) => {
     console.log("got webhook ping form github")
-    console.log(req.body)
+    res.send("got")
+    exec("git")
 });
 
 io.on('connection', async(socket) => {
