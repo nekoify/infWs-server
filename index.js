@@ -865,7 +865,7 @@ function buy(id, cost) {
 
 function receveLootBox(item, id) {
     var flags = getAvalibleFlags(accountData[id].owns)
-    if (item.item.id == "coins") {
+    if (item.id == "coins") {
         accountData[id].coins += 30
         return "30 coins"
     } else {
@@ -1098,7 +1098,7 @@ io.on('connection', async(socket) => {
         data = JSON.parse(data)
         var lootBox = inputClick(data)
         if (lootBox) {
-            var item = receveLootBox(openLootbox())
+            var item = receveLootBox(openLootbox(), data.id)
             
             socket.emit("openedLootbox", JSON.stringify({
                 item:item,
