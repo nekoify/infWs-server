@@ -932,6 +932,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
 
         if (tile.lootBox) {
             isLootBox = true
+            tile.lootBox = false
             
         }
 
