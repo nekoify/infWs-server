@@ -864,7 +864,7 @@ function buy(id, cost) {
 }
 
 function receveLootBox(item, id) {
-    var flags = getAvalibleFlags(accountData[multiplayerId].owns)
+    var flags = getAvalibleFlags(accountData[id].owns)
     if (item.item.id == "coins") {
         accountData[id].coins += 30
         return "30 coins"
