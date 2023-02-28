@@ -877,6 +877,8 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
     function s(s, type) {modifyScore(user.id, s, type)}
 
     acknowledgeAccount(user.id, user.name)
+
+    var isLootBox = false
     
 
     let tile = mainChunks.requestTile(data.pos.x,data.pos.y),
@@ -914,6 +916,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                 }
                 if (tile.lootBox) {
                     var loot = openLootbox()
+                    isLootBox = true
                     
                 }
                 if (tile.count==0&&!tile.mine) {
@@ -938,6 +941,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
 
     
     updateTicker = 2000
+    return isLootBox
 } 
 function getNeighbours(tilePos) {
     
@@ -1044,7 +1048,12 @@ io.on('connection', async(socket) => {
       
     socket.on('makeClick', (data) => {
         data = JSON.parse(data)
-        inputClick(data)
+        var lootBox = inputClick(data)
+        if (lootBox) {
+            socket.emit("openedLootbox", JSON.stringify({
+                item:openLootbox()
+            }))
+        }
     });
     socket.on('setFlagselection', (data) => {
         data = JSON.parse(data)
