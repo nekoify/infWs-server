@@ -205,7 +205,7 @@ function cTile(e, t) {
     this.pos = v(e, t)
     let dst = getDst(v(0,0),v(e,t))*0.2,
         num = 7-Math.pow(Math.sqrt(dst*0.13),3.2)
-    this.mine = (1/num<=0)?Math.random()<(1/num):true
+    this.mine = (1/num<=0)?true:Math.random()<(1/num)
     this.uncovered = false
     this.flagged = false
     this.lootBox = (Math.random()<(0.5/100))?1:false
