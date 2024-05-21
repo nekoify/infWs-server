@@ -171,13 +171,6 @@ function getDst(x, y) {
 }
 
 
-function cos(num) {
-    return Math.cos(num * Math.PI / 180)
-}
-
-function sin(num) {
-    return Math.sin(num * Math.PI / 180)
-}
 
 
 
