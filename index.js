@@ -1131,10 +1131,12 @@ io.on('connection', async(socket) => {
     socket.on('requestingChunks', (data) => {
         data = JSON.parse(data)
         viewport = data.viewport
-        socket.emit("returningChunks", JSON.stringify({
-            chunks:mainChunks.requestChunks(viewport.x, viewport.y, viewport.width, viewport.height),
-            leaderboard:accountData
-        }))
+        if (viewport!=undefined) {
+            socket.emit("returningChunks", JSON.stringify({
+                chunks:mainChunks.requestChunks(viewport.x, viewport.y, viewport.width, viewport.height),
+                leaderboard:accountData
+            }))
+        }
 
 
     });
