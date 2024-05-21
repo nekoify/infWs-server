@@ -27,7 +27,7 @@ test
 
 */
 
-const SERVER_UPDATES_PER_SECOND = 4
+const SERVER_UPDATES_PER_SECOND = 16
 const CHAINBREAKING_LIMIT = 10
 const RESET_ON_BOMB = false
 
