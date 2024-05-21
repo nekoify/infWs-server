@@ -27,7 +27,7 @@ test
 
 */
 
-const SERVER_UPDATES_PER_SECOND = 20
+const SERVER_UPDATES_PER_SECOND = 4
 const CHAINBREAKING_LIMIT = 10
 const RESET_ON_BOMB = false
 
@@ -1083,6 +1083,7 @@ io.on('connection', async(socket) => {
     socket.on("account", (data) => {
         console.log(data)
       })
+    moveQue=true
 
       
     socket.on('makeClick', (data) => {
@@ -1095,6 +1096,7 @@ io.on('connection', async(socket) => {
                 item:item,
             }))
         }
+        moveQue = true
     });
     socket.on('setFlagselection', (data) => {
         data = JSON.parse(data)
@@ -1128,27 +1130,37 @@ io.on('connection', async(socket) => {
     });
     socket.on('requestingChunks', (data) => {
         data = JSON.parse(data)
+        viewport = data.viewport
         socket.emit("returningChunks", JSON.stringify({
-            chunks:mainChunks.requestChunks(data.x, data.y, data.width, data.height),
+            chunks:mainChunks.requestChunks(viewport.x, viewport.y, viewport.width, viewport.height),
             leaderboard:accountData
         }))
 
 
     });
 
-
-
-    
-
 })
+
+function updateClients() {
+   io.sockets.emit("serverChange")
+}
+
+
+var moveQue = false
 
 setInterval(() => {
     var time = ((new Date()).getTime())
     updateTicker -= time-previouseDelta
     previouseDelta = time
+
+    if (moveQue) {
+        updateClients()
+        moveQue = false
+    }
    
     
 }, 1000/SERVER_UPDATES_PER_SECOND);
+
 
 
 server.listen(process.env.PORT || 8085, () => {
