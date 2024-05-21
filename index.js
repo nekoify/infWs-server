@@ -1107,6 +1107,20 @@ io.on('connection', async(socket) => {
 
 
     });
+
+    socket.on('sendChat', (data) => {
+        io.sockets.emit("recChat", data)
+    })
+
+
+
+
+
+
+
+
+
+
     socket.on('buyFlag', (data) => {
         console.log("event got")
         data = JSON.parse(data)
