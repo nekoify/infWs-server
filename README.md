@@ -2,7 +2,7 @@
 
 Todo:
 
-- [ ] Move data storage from local
+- [ ] Move data storage from local to mongodb
 - [ ] Fix this shitty code
 - [ ] Split code into multiple files (eg. seperate files for the discord bot)
 - [ ] Figure out why the whole helper file was pasted into the main file
