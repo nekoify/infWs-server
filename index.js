@@ -27,12 +27,6 @@ test
 
 */
 
-const atatus = require("atatus-nodejs");
-atatus.start({
-    licenseKey: "lic_apm_c7ead171c6d14a509f211d91de05fadb",
-    appName: "infms",
-});
-
 const SERVER_UPDATES_PER_SECOND = 20
 const CHAINBREAKING_LIMIT = 10
 const RESET_ON_BOMB = false
