@@ -1154,6 +1154,7 @@ setInterval(() => {
     previouseDelta = time
 
     if (moveQue) {
+	console.log("hi?")
         updateClients()
         moveQue = false
     }
