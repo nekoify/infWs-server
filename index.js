@@ -1109,6 +1109,20 @@ io.on('connection', async(socket) => {
 
 
     });
+
+    socket.on('sendChat', (data) => {
+        io.sockets.emit("recChat", data)
+    })
+
+
+
+
+
+
+
+
+
+
     socket.on('buyFlag', (data) => {
         console.log("event got")
         data = JSON.parse(data)
@@ -1156,6 +1170,7 @@ setInterval(() => {
     previouseDelta = time
 
     if (moveQue) {
+	console.log("hi?")
         updateClients()
         moveQue = false
     }
