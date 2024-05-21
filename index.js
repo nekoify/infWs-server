@@ -473,8 +473,9 @@ function receveLootBox(item, id) {
         var newFlag = pickRandomFlag(
             (item.id=="commonFlag")?flags.common:flags.rare
         )
-
+        console.log(`id ${id} now owns ${newFlag}`)
         accountData[id].owns[newFlag] = true
+        fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
 
         return shopData.flags[newFlag]
     }
