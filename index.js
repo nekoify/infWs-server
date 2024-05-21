@@ -1075,12 +1075,7 @@ app.get('/', (req, res) => {
     res.send('server');
 });
 
-app.post('/update', (req, res) => {
-    console.log("got webhook ping form github")
-    res.send("got")
-    exec("git pull origin")
-    exec("pm2 restart 8")
-});
+
 
 io.on('connection', async(socket) => {
     updateTicker = 2000
