@@ -10,7 +10,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "atatus-nodejs": "^1.5.5",
         "cross-fetch": "^3.1.5",
         "crypto-js": "^4.1.1",
         "discord.js": "^13.13.1",
@@ -18,7 +17,6 @@
         "express": "^4.17.3",
         "mongquick": "github:ahqsoftwares/quickmongo",
         "os": "^0.1.2",
-        "puppeteer": "^19.7.2",
         "socket.io": "^4.4.1"
     }
 }

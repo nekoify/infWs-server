@@ -129,7 +129,7 @@ var exec = require('child_process').exec;
 require('dotenv').config()
 const process = require("process")
 const express = require('express');
-const puppeteer = require('puppeteer');
+//const puppeteer = require('puppeteer');
 const app = express();
 const os = require('os')
 const http = require('http');
@@ -140,7 +140,6 @@ var accountData = require(`${__dirname}/account.json`)
 const chunkData = require(`${__dirname}/chunks.json`)
 const { Client, Intents, MessageEmbed, MessageAttachment } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
-
 
 
 function createElementFromHTML(htmlString) {
@@ -689,7 +688,9 @@ class Chunks {
 };
 
 
-
+mainChunks = new Chunks()
+chunkData["chunks"] = mainChunks.chunkMaps
+fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
 
 function acknowledgeAccount(id, name) {
     accountData[id] = accountData[id]||({
@@ -1165,7 +1166,7 @@ setInterval(() =>{
     fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
 },30000)
-
+/*
 client.on("ready", ()=>{
     console.log(`Logged in as ${client.user.tag}!`);
     client.user.setPresence({ activities: [{ name: 'https://aeolus-1.github.io/infinateMuliMinesweeper/', }], status: 'available' });
@@ -1181,7 +1182,7 @@ client.on("messageCreate", (message) => {
         }
         message.channel.send(`${stats.tilesUncovered} blocks uncovered, ${stats.flags} flags placed, ${stats.minesTriggered} mines triggered`)
     }
-})*/
+})
 client.on("messageCreate", (message) => {
     var string = message.content
     string = string.split(" ")
@@ -1412,3 +1413,4 @@ client.on("messageCreate", (message) => {
 
 
 client.login(process.env.TOKEN)
+*/

@@ -3,3 +3,4 @@ node_modules
 account.json
 chunks.json
 screenshot.jpg
+package-lock.json
