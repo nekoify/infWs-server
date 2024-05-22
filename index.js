@@ -34,6 +34,8 @@ const RESET_ON_BOMB = false
 const TILE_CLEAR_REWARD = 1
 const TRIGGER_MINE_REWARD = -25
 
+const LOOT_BOX_FREQ = 125 // boxes per tiles
+
 var shopData = {
     flags:{
         1:{
@@ -204,11 +206,11 @@ function tileArray2d(e, t, n, r, c) {
 function cTile(e, t) {
     this.pos = v(e, t)
     var dst = getDst(v(0,0),v(e,t))*0.5,
-        num = Math.abs(Math.sin(dst))*0.10
-    this.mine = Math.random()<((0.05+num))*0.8
+        num = Math.abs(Math.sin(dst))*0.075
+    this.mine = Math.random()<((0.1+num))*0.8
     this.uncovered = false
     this.flagged = false
-    this.lootBox = this.mine?false:Math.random()<(1/65)
+    this.lootBox = this.mine?false:Math.random()<(1/LOOT_BOX_FREQ)
     this.flaggedBy = null
 }
 function cChunk(e, t) {
