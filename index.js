@@ -540,14 +540,42 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
 
         if (!tile.uncovered) {
             if (data.flag) {
-                tile.flagged = !tile.flagged
-                if (tile.flaggedBy != data.name) {
-                    updateStats(user.id, {
-                        minesFlagged:1,
-                    })
+                if (tile.flaggedById==data.id){
+                    
+                    tile.flagged = !tile.flagged
+                    if (tile.flaggedBy != data.name) {
+                        updateStats(user.id, {
+                            minesFlagged:1,
+                        })
+                    }
+                    tile.flaggedBy = data.name
+                    tile.flaggedById = data.id
+                    
+                } else {
+                    let neightbours = getNeighbours(v(data.pos.x,data.pos.y)),
+                        notAllSearched = false
+                    for (let i = 0; i < neightbours.length; i++) {
+                        const ni = neightbours[i];
+                        if (!((ni.uncovered&&!ni.mine)||(ni.flagged))) {
+                            notAllSearched = true
+                        }
+                    }
+
+                    tileHasBeenCleared = !notAllSearched
+
+                    
+                    if (!tileHasBeenCleared) {
+                        tile.flagged = !tile.flagged
+                        if (tile.flaggedBy != data.name) {
+                            updateStats(user.id, {
+                                minesFlagged:1,
+                            })
+                        }
+                        tile.flaggedBy = data.name
+                        tile.flaggedById = data.id
+                    }
                 }
-                tile.flaggedBy = data.name
-                tile.flaggedById = data.id
+                
                 
             } else if (!tile.flagged) {
                 updateStats(user.id, {
@@ -588,7 +616,9 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                 }
           }
             
-        } else tile.flagged = false
+        } else {
+            tile.flagged = false
+        }
 
     
     updateTicker = 2000
