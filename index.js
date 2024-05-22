@@ -683,7 +683,7 @@ function openLootbox() {
         commonflag:{
             name:"a common flag",
             id:"commonflag",
-            weight:0.5
+            weight:0.3
         },
         rareflag:{
             name:"a rare flag",
