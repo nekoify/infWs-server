@@ -688,7 +688,7 @@ function openLootbox() {
         rareflag:{
             name:"a rare flag",
             id:"rareflag",
-            weight:0.1
+            weight:0.075
         },
     },
     total = 0
