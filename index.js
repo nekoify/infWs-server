@@ -534,6 +534,9 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
     let tile = mainChunks.requestTile(data.pos.x,data.pos.y),
         count = countNeighbours(v(data.pos.x,data.pos.y))
 
+        if (tile.lootBox&&count<=0) {
+            tile.lootBox = false
+        }
         if (tile.lootBox&&tile.uncovered) {
             isLootBox = true
             tile.lootBox = false
