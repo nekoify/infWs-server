@@ -319,7 +319,7 @@ function acknowledgeAccount(id, name) {
         },
         selectedFlag:1,
     });
-    accountData[id].owns = accountData[id].owns||{}
+    accountData[id].owns = accountData[id].owns||{1:true}
     accountData[id].selectedFlag = accountData[id].selectedFlag||1
     accountData[id].name = name
     fs.writeFileSync(`${__dirname}/account.json`, JSON.stringify(accountData));
