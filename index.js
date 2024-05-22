@@ -591,7 +591,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                     return
                 }
                 if (tile.mine) {
-                    if (accountData[id].score>0) io.sockets.emit("recChat", {"user":"SERVER","msg":`User ${user.name} hit a mine!`})
+                    if (accountData[user.id].score>0) io.sockets.emit("recChat", {"user":"SERVER","msg":`User ${user.name} hit a mine!`})
                     s(TRIGGER_MINE_REWARD, "bomb")
                     updateStats(user.id, {
                         minesTriggered:1,
