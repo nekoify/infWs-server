@@ -307,6 +307,10 @@ chunkData["chunks"] = mainChunks.chunkMaps
 fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
 
 function acknowledgeAccount(id, name) {
+    console.log(`Name: ${name} Type: ${typeof(name)}`)
+    if (name == undefined) {
+        name = String("undefined" + Math.floor(Math.random()*(999-100+1)+100))
+    }
     accountData[id] = accountData[id]||({
         name:name.substring(0, 5),
         score:0,
