@@ -308,7 +308,7 @@ fs.writeFileSync(`${__dirname}/chunks.json`, JSON.stringify(chunkData));
 
 function acknowledgeAccount(id, name) {
     accountData[id] = accountData[id]||({
-        name:name,
+        name:name.substring(0, 5),
         score:0,
         coins:0,
         stats:{
@@ -601,7 +601,7 @@ function inputClick(data, user, tick=CHAINBREAKING_LIMIT) {
                     updateStats(user.id, {
                         minesTriggered:1,
                     })
-                    if (accountData[user.id].score>0) io.sockets.emit("recChat", {"user":"SERVER","msg":`User ${user.name} hit a mine!`})
+                    if (accountData[user.id].score>0) io.sockets.emit("recChat", {"user":"SERVER","msg":`User ${(user.name).substring(0, 5)} hit a mine!`})
                     
                 }
                 
