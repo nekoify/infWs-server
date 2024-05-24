@@ -15,7 +15,6 @@
         "discord.js": "^13.13.1",
         "dotenv": "^16.0.3",
         "express": "^4.17.3",
-        "mongquick": "github:ahqsoftwares/quickmongo",
         "os": "^0.1.2",
         "socket.io": "^4.4.1"
     }
