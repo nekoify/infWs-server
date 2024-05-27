@@ -803,7 +803,8 @@ io.on('connection', async(socket) => {
         if (viewport!=undefined) {
             socket.emit("returningChunks", JSON.stringify({
                 chunks:mainChunks.requestChunks(viewport.x, viewport.y, viewport.width, viewport.height),
-                leaderboard:accountData
+                leaderboard:accountData,
+                timestamp:((new Date()).getTime()),
             }))
         }
 
